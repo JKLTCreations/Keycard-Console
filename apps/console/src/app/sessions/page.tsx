@@ -5,9 +5,13 @@ import { PageHeader } from "@/components/page-header";
 import { DataTable, Column } from "@/components/data-table";
 import { StatusBadge } from "@/components/status-badge";
 import { EmptyState } from "@/components/empty-state";
+import { LiveIndicator } from "@/components/live-indicator";
 import { getSessions, Session } from "@/lib/api";
 import { MonitorDot } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { clsx } from "clsx";
+
+const filters = ["All", "Running", "Completed", "Failed"] as const;
 
 const columns: Column<Session>[] = [
   {
@@ -23,12 +27,21 @@ const columns: Column<Session>[] = [
   {
     key: "status",
     header: "Status",
-    render: (s) => <StatusBadge status={s.status} />,
+    render: (s) => (
+      <div className="flex items-center gap-2">
+        {s.status === "running" && <LiveIndicator />}
+        <StatusBadge status={s.status} />
+      </div>
+    ),
   },
   {
     key: "task_description",
     header: "Task",
-    render: (s) => <span className="text-gray-400 text-xs max-w-xs truncate block">{s.task_description}</span>,
+    render: (s) => (
+      <span className="text-gray-400 text-xs max-w-xs truncate block" title={s.task_description}>
+        {s.task_description}
+      </span>
+    ),
   },
   {
     key: "tool_call_count",
@@ -49,6 +62,7 @@ const columns: Column<Session>[] = [
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
   const [loading, setLoading] = useState(true);
+  const [filter, setFilter] = useState<typeof filters[number]>("All");
 
   useEffect(() => {
     getSessions()
@@ -57,15 +71,42 @@ export default function SessionsPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  const filtered = filter === "All"
+    ? sessions
+    : sessions.filter((s) => s.status.toLowerCase() === filter.toLowerCase());
+
   return (
     <div className="max-w-7xl mx-auto">
       <PageHeader title="Sessions" description="View active and historical agent sessions" />
 
+      {/* Filter chips */}
+      <div className="flex items-center gap-2 mb-6">
+        {filters.map((f) => (
+          <button
+            key={f}
+            onClick={() => setFilter(f)}
+            className={clsx(
+              "px-3 py-1.5 text-xs font-medium rounded-lg transition-all",
+              filter === f
+                ? "bg-brand-600/20 text-brand-300 border border-brand-500/30"
+                : "bg-gray-800/30 text-gray-500 border border-gray-800/50 hover:text-gray-300 hover:border-gray-700/50"
+            )}
+          >
+            {f}
+            {f !== "All" && (
+              <span className="ml-1.5 text-[10px] tabular-nums">
+                {sessions.filter((s) => s.status.toLowerCase() === f.toLowerCase()).length}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-gray-700 border-t-indigo-500 rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-gray-700 border-t-brand-500 rounded-full animate-spin" />
         </div>
-      ) : sessions.length === 0 ? (
+      ) : filtered.length === 0 ? (
         <EmptyState
           icon={MonitorDot}
           title="No sessions found"
@@ -74,7 +115,7 @@ export default function SessionsPage() {
       ) : (
         <DataTable
           columns={columns}
-          data={sessions}
+          data={filtered}
           rowHref={(s) => `/sessions/${s.id}`}
         />
       )}
