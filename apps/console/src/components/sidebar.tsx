@@ -47,7 +47,7 @@ export function Sidebar() {
           </div>
           <div>
             <span className="text-sm font-semibold text-text-primary">Keycard</span>
-            <p className="text-[11px] text-text-muted leading-none mt-0.5">Acme Corp</p>
+            <p className="text-[11px] text-text-muted leading-none mt-0.5">Lathu & Jordan LLC</p>
           </div>
         </div>
       </div>

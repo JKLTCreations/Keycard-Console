@@ -112,7 +112,7 @@ export function seedDemoData(db: Database.Database): void {
 
   // Organization
   db.prepare('INSERT INTO organizations (id, name, created_at) VALUES (?, ?, ?)').run(
-    orgId, 'Acme Corp', '2025-11-01T00:00:00.000Z'
+    orgId, 'Lathu & Jordan LLC', '2025-11-01T00:00:00.000Z'
   );
 
   // User
