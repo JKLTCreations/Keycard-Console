@@ -1,6 +1,15 @@
 import { clsx } from "clsx";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
+type Tint = "default" | "green" | "blue" | "amber";
+
+const tints: Record<Tint, { bg: string; hover: string }> = {
+  default: { bg: "bg-surface-1", hover: "hover:bg-surface-2" },
+  green:   { bg: "bg-[#30a46c06]", hover: "hover:bg-[#30a46c0c]" },
+  blue:    { bg: "bg-[#3b82f606]", hover: "hover:bg-[#3b82f60c]" },
+  amber:   { bg: "bg-[#f5a62306]", hover: "hover:bg-[#f5a6230c]" },
+};
+
 interface MetricCardProps {
   label: string;
   value: string | number;
@@ -9,6 +18,7 @@ interface MetricCardProps {
     direction: "up" | "down";
   };
   icon?: React.ReactNode;
+  tint?: Tint;
   className?: string;
 }
 
@@ -19,11 +29,15 @@ function formatValue(value: string | number): string {
   return String(value);
 }
 
-export function MetricCard({ label, value, trend, icon, className }: MetricCardProps) {
+export function MetricCard({ label, value, trend, icon, tint = "default", className }: MetricCardProps) {
+  const t = tints[tint];
+
   return (
     <div
       className={clsx(
-        "rounded-lg border border-border bg-surface-1 p-5",
+        "rounded-lg border border-border-subtle p-5 transition-colors",
+        t.bg,
+        t.hover,
         className
       )}
     >
