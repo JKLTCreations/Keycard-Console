@@ -104,17 +104,20 @@ export default function DashboardPage() {
           value={stats.requests_today}
           icon={<Activity className="w-4 h-4" />}
           trend={{ value: 8, direction: "up" }}
+          tint="blue"
         />
         <MetricCard
           label="Success Rate"
           value={`${stats.success_rate}%`}
           icon={<CheckCircle className="w-4 h-4" />}
           trend={{ value: 2, direction: "up" }}
+          tint="green"
         />
         <MetricCard
           label="Active Sessions"
           value={stats.active_sessions}
           icon={<Zap className="w-4 h-4" />}
+          tint="amber"
         />
       </div>
 
