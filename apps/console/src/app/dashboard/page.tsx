@@ -60,7 +60,7 @@ export default function DashboardPage() {
     return (
       <div className="max-w-7xl mx-auto">
         <PageHeader title="Dashboard" description="System overview and recent activity" />
-        <div className="rounded-lg border border-border bg-surface-1 p-8 text-center text-text-muted">
+        <div className="border border-border bg-surface-1 p-8 text-center text-text-muted">
           <p>Unable to load dashboard data. Make sure the API server is running on port 3001.</p>
           <p className="text-[13px] text-text-faint mt-2">{error}</p>
         </div>
@@ -104,26 +104,23 @@ export default function DashboardPage() {
           value={stats.requests_today}
           icon={<Activity className="w-4 h-4" />}
           trend={{ value: 8, direction: "up" }}
-          tint="blue"
         />
         <MetricCard
           label="Success Rate"
           value={`${stats.success_rate}%`}
           icon={<CheckCircle className="w-4 h-4" />}
           trend={{ value: 2, direction: "up" }}
-          tint="green"
         />
         <MetricCard
           label="Active Sessions"
           value={stats.active_sessions}
           icon={<Zap className="w-4 h-4" />}
-          tint="amber"
         />
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 mb-8">
-        <div className="lg:col-span-2 rounded-lg border border-border bg-surface-1 p-5">
+        <div className="lg:col-span-2 border border-border bg-surface-1 p-5">
           <h3 className="text-[13px] font-medium text-text-muted mb-4">Activity (24h)</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">
@@ -149,7 +146,7 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="rounded-lg border border-border bg-surface-1 p-5">
+        <div className="border border-border bg-surface-1 p-5">
           <h3 className="text-[13px] font-medium text-text-muted mb-4">Approval Breakdown</h3>
           <div className="h-44 relative">
             <ResponsiveContainer width="100%" height="100%">
@@ -184,11 +181,11 @@ export default function DashboardPage() {
       </div>
 
       {/* Activity Feed */}
-      <div className="rounded-lg border border-border bg-surface-1 p-5 mb-8">
+      <div className="border border-border bg-surface-1 p-5 mb-8">
         <h3 className="text-[13px] font-medium text-text-muted mb-4">Recent Activity</h3>
         <div className="space-y-0">
           {recentEvents.map((event) => (
-            <div key={event.id} className="flex items-center gap-3 px-2 py-2 rounded-md">
+            <div key={event.id} className="flex items-center gap-3 px-2 py-2">
               <span className="text-[11px] font-mono text-text-muted w-24 flex-shrink-0 truncate">
                 {event.agent_name || event.agent_id.slice(0, 10)}
               </span>
@@ -209,11 +206,11 @@ export default function DashboardPage() {
       {/* Bottom */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
         {/* Denials */}
-        <div className="rounded-lg border border-border bg-surface-1 p-5">
+        <div className="border border-border bg-surface-1 p-5">
           <h3 className="text-[13px] font-medium text-text-muted mb-4">Recent Denials</h3>
           <div className="space-y-2">
             {stats.recent_denials.map((d) => (
-              <div key={d.id} className="p-3 rounded-md bg-surface-2">
+              <div key={d.id} className="p-3 bg-surface-2">
                 <div className="flex items-center justify-between mb-1">
                   <span className="text-[11px] font-mono text-text-secondary">{d.agent_name}</span>
                   <span className="text-[10px] text-text-faint">
@@ -228,7 +225,7 @@ export default function DashboardPage() {
         </div>
 
         {/* Agent Activity */}
-        <div className="rounded-lg border border-border bg-surface-1 p-5">
+        <div className="border border-border bg-surface-1 p-5">
           <h3 className="text-[13px] font-medium text-text-muted mb-4">Agent Activity</h3>
           <div className="h-56">
             <ResponsiveContainer width="100%" height="100%">

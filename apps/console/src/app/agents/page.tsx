@@ -20,7 +20,7 @@ const columns: Column<Agent>[] = [
     key: "type",
     header: "Type",
     render: (agent) => (
-      <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-1.5 py-0.5 rounded">{agent.type}</span>
+      <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-1.5 py-0.5">{agent.type}</span>
     ),
   },
   {
@@ -65,7 +65,7 @@ export default function AgentsPage() {
         action={
           <Link
             href="/agents/new"
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium rounded-md bg-surface-3 text-text-primary border border-border hover:bg-[#ffffff10] transition-colors"
+            className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium bg-surface-3 text-text-primary border border-border hover:bg-[#ffffff10] transition-colors"
           >
             <Plus className="w-3.5 h-3.5" />
             Register Agent

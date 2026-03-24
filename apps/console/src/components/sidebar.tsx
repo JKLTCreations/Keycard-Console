@@ -42,7 +42,7 @@ export function Sidebar() {
       {/* Brand */}
       <div className="px-5 py-5 border-b border-border-subtle">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-surface-3">
+          <div className="flex items-center justify-center w-7 h-7 bg-surface-3">
             <KeyRound className="w-3.5 h-3.5 text-text-secondary" />
           </div>
           <div>
@@ -63,7 +63,7 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={clsx(
-                "flex items-center gap-3 px-3 py-2 rounded-md text-[13px] font-medium transition-colors",
+                "flex items-center gap-3 px-3 py-2 text-[13px] font-medium transition-colors",
                 active
                   ? "bg-[#ffffff08] text-text-primary"
                   : "text-text-muted hover:text-text-secondary hover:bg-[#ffffff05]"
@@ -95,7 +95,7 @@ export function Sidebar() {
     <>
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-md bg-surface-2 text-text-muted lg:hidden"
+        className="fixed top-4 left-4 z-50 p-2 bg-surface-2 text-text-muted lg:hidden"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>

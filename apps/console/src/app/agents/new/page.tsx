@@ -46,7 +46,7 @@ export default function NewAgentPage() {
   };
 
   const inputClasses =
-    "w-full rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-200 placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors";
+    "w-full border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm text-gray-200 placeholder-gray-500 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 outline-none transition-colors";
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -62,7 +62,7 @@ export default function NewAgentPage() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {error && (
-          <div className="rounded-lg border border-red-500/30 bg-red-500/5 p-4 text-sm text-red-300">
+          <div className="border border-red-500/30 bg-red-500/5 p-4 text-sm text-red-300">
             {error}
           </div>
         )}
@@ -110,13 +110,13 @@ export default function NewAgentPage() {
           <button
             type="submit"
             disabled={submitting || !name}
-            className="px-6 py-2.5 text-sm font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2.5 text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {submitting ? "Creating..." : "Create Agent"}
           </button>
           <Link
             href="/agents"
-            className="px-6 py-2.5 text-sm font-medium rounded-lg border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors"
+            className="px-6 py-2.5 text-sm font-medium border border-gray-700 text-gray-300 hover:bg-gray-800 transition-colors"
           >
             Cancel
           </Link>

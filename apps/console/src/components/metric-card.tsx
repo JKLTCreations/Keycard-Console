@@ -1,15 +1,6 @@
 import { clsx } from "clsx";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
-type Tint = "default" | "green" | "blue" | "amber";
-
-const tints: Record<Tint, { bg: string }> = {
-  default: { bg: "bg-surface-1" },
-  green:   { bg: "bg-[#30a46c06]" },
-  blue:    { bg: "bg-[#3b82f606]" },
-  amber:   { bg: "bg-[#f5a62306]" },
-};
-
 interface MetricCardProps {
   label: string;
   value: string | number;
@@ -18,7 +9,6 @@ interface MetricCardProps {
     direction: "up" | "down";
   };
   icon?: React.ReactNode;
-  tint?: Tint;
   className?: string;
 }
 
@@ -29,14 +19,11 @@ function formatValue(value: string | number): string {
   return String(value);
 }
 
-export function MetricCard({ label, value, trend, icon, tint = "default", className }: MetricCardProps) {
-  const t = tints[tint];
-
+export function MetricCard({ label, value, trend, icon, className }: MetricCardProps) {
   return (
     <div
       className={clsx(
-        "border border-border-subtle p-5 transition-colors hover:bg-surface-2",
-        t.bg,
+        "border border-border-subtle bg-surface-1 p-5 transition-colors hover:bg-surface-2",
         className
       )}
     >
@@ -48,7 +35,7 @@ export function MetricCard({ label, value, trend, icon, tint = "default", classN
           </p>
         </div>
         {icon && (
-          <div className="flex items-center justify-center w-8 h-8 rounded-md bg-surface-2 text-text-muted">
+          <div className="flex items-center justify-center w-8 h-8 bg-surface-2 text-text-muted">
             {icon}
           </div>
         )}

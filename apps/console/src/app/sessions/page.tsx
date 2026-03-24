@@ -81,7 +81,7 @@ export default function SessionsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={clsx(
-              "px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors",
+              "px-3 py-1.5 text-[11px] font-medium transition-colors",
               filter === f
                 ? "bg-[#ffffff08] text-text-secondary border border-border-hover"
                 : "text-text-muted border border-transparent hover:text-text-secondary"

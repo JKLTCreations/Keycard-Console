@@ -32,13 +32,13 @@ export default function ToolsPage() {
           {tools.map((tool) => (
             <div
               key={tool.id}
-              className="rounded-lg border border-border bg-surface-1 p-4 hover:bg-[#ffffff03] transition-colors cursor-pointer"
+              className="border border-border bg-surface-1 p-4 hover:bg-[#ffffff03] transition-colors cursor-pointer"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-surface-2 text-[13px] font-semibold text-text-muted">
+                <div className="flex items-center justify-center w-8 h-8 bg-surface-2 text-[13px] font-semibold text-text-muted">
                   {tool.name.charAt(0)}
                 </div>
-                <span className="text-[10px] font-mono text-text-faint bg-surface-2 px-1.5 py-0.5 rounded">
+                <span className="text-[10px] font-mono text-text-faint bg-surface-2 px-1.5 py-0.5">
                   {tool.category}
                 </span>
               </div>

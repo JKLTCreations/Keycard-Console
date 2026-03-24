@@ -56,15 +56,15 @@ export default function PolicyDetailPage() {
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="rounded-md border border-border bg-surface-1 p-3">
+        <div className="border border-border bg-surface-1 p-3">
           <p className="text-[11px] text-text-faint font-medium mb-1">Policy ID</p>
           <p className="text-[13px] text-text-secondary font-mono">{(params.id as string).slice(0, 12)}</p>
         </div>
-        <div className="rounded-md border border-border bg-surface-1 p-3">
+        <div className="border border-border bg-surface-1 p-3">
           <p className="text-[11px] text-text-faint font-medium mb-1">Total Rules</p>
           <p className="text-[13px] text-text-secondary">{rules.length}</p>
         </div>
-        <div className="rounded-md border border-border bg-surface-1 p-3">
+        <div className="border border-border bg-surface-1 p-3">
           <p className="text-[11px] text-text-faint font-medium mb-1">Breakdown</p>
           <div className="flex items-center gap-2 text-[11px]">
             {allows > 0 && <span className="text-[#30a46c]">{allows} allow</span>}
@@ -72,7 +72,7 @@ export default function PolicyDetailPage() {
             {escalates > 0 && <span className="text-[#f5a623]">{escalates} escalate</span>}
           </div>
         </div>
-        <div className="rounded-md border border-border bg-surface-1 p-3">
+        <div className="border border-border bg-surface-1 p-3">
           <p className="text-[11px] text-text-faint font-medium mb-1">Last Modified</p>
           <p className="text-[13px] text-text-secondary">{format(new Date(policy.updated_at), "MMM d, yyyy")}</p>
         </div>
@@ -82,7 +82,7 @@ export default function PolicyDetailPage() {
         <h3 className="text-[13px] font-medium text-text-muted mb-3">Rules</h3>
         <div className="space-y-1.5">
           {rules.map((rule, i) => (
-            <div key={i} className="rounded-md border border-border bg-surface-1 p-3">
+            <div key={i} className="border border-border bg-surface-1 p-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4 text-[13px]">
                   <div>

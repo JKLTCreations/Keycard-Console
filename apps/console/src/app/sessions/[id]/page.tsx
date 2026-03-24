@@ -74,7 +74,7 @@ export default function SessionDetailPage() {
           { label: "Started", value: formatDistanceToNow(new Date(session.started_at), { addSuffix: true }), icon: Clock },
           { label: "Tool Calls", value: String(session.tool_call_count), icon: Terminal },
         ].map((item) => (
-          <div key={item.label} className="rounded-md border border-border bg-surface-1 p-3">
+          <div key={item.label} className="border border-border bg-surface-1 p-3">
             <div className="flex items-center gap-1.5 mb-1">
               <item.icon className="w-3 h-3 text-text-faint" />
               <p className="text-[11px] text-text-faint font-medium">{item.label}</p>
@@ -84,7 +84,7 @@ export default function SessionDetailPage() {
         ))}
       </div>
 
-      <div className="rounded-lg border border-border bg-surface-1 p-5">
+      <div className="border border-border bg-surface-1 p-5">
         <h3 className="text-[13px] font-medium text-text-muted mb-5">Event Timeline</h3>
         {events.length === 0 ? (
           <p className="text-[13px] text-text-muted">No events recorded for this session.</p>
@@ -100,10 +100,10 @@ export default function SessionDetailPage() {
                   <div className="flex flex-col items-center flex-shrink-0 pt-2.5">
                     <div className={clsx("w-2 h-2 rounded-full z-10 ring-2 ring-surface-1", nodeColor(event.outcome))} />
                   </div>
-                  <div className="flex-1 rounded-md border border-border-subtle p-3 mb-1.5">
+                  <div className="flex-1 border border-border-subtle p-3 mb-1.5">
                     <div className="flex items-center gap-2 flex-wrap">
                       {event.tool_name && (
-                        <span className="text-[10px] font-medium text-text-muted bg-surface-2 px-1.5 py-0.5 rounded">
+                        <span className="text-[10px] font-medium text-text-muted bg-surface-2 px-1.5 py-0.5">
                           {event.tool_name}
                         </span>
                       )}

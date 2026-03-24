@@ -69,7 +69,7 @@ export default function PoliciesPage() {
         title="Policies"
         description="Access control policies for agent authorization"
         action={
-          <button className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium rounded-md bg-surface-3 text-text-primary border border-border hover:bg-[#ffffff10] transition-colors">
+          <button className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium bg-surface-3 text-text-primary border border-border hover:bg-[#ffffff10] transition-colors">
             <Plus className="w-3.5 h-3.5" />
             Create Policy
           </button>
