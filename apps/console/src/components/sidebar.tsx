@@ -17,10 +17,9 @@ import {
   User,
 } from "lucide-react";
 import { useState } from "react";
-import { LiveIndicator } from "./live-indicator";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard, showLive: true },
+  { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
   { href: "/sessions", label: "Sessions", icon: MonitorDot },
   { href: "/agents", label: "Agents", icon: Bot },
   { href: "/policies", label: "Policies", icon: ShieldCheck },
@@ -40,22 +39,21 @@ export function Sidebar() {
 
   const nav = (
     <div className="flex flex-col h-full">
-      {/* Gradient accent line */}
-      <div className="h-[2px] bg-gradient-to-r from-brand-600 via-brand-500 to-cyan-500" />
-
       {/* Brand */}
-      <div className="px-5 py-5 border-b border-gray-800/60">
+      <div className="px-5 py-5 border-b border-border-subtle">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-brand-600 shadow-glow-sm">
-            <KeyRound className="w-4 h-4 text-white" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-md bg-surface-3">
+            <KeyRound className="w-3.5 h-3.5 text-text-secondary" />
           </div>
-          <span className="text-lg font-semibold text-gray-100">Keycard</span>
+          <div>
+            <span className="text-sm font-semibold text-text-primary">Keycard</span>
+            <p className="text-[11px] text-text-muted leading-none mt-0.5">Acme Corp</p>
+          </div>
         </div>
-        <p className="text-[11px] text-gray-600 mt-1.5 pl-11">Acme Corp</p>
       </div>
 
-      {/* Nav Links */}
-      <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
+      {/* Nav */}
+      <nav className="flex-1 px-3 py-3 space-y-px overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -65,33 +63,29 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={clsx(
-                "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all relative",
+                "flex items-center gap-3 px-3 py-2 rounded-md text-[13px] font-medium transition-colors",
                 active
-                  ? "bg-brand-600/10 text-white border-l-2 border-brand-500 ml-0 pl-[10px]"
-                  : "text-gray-400 hover:text-gray-200 hover:bg-gray-800/40 border-l-2 border-transparent ml-0 pl-[10px]"
+                  ? "bg-[#ffffff08] text-text-primary"
+                  : "text-text-muted hover:text-text-secondary hover:bg-[#ffffff05]"
               )}
             >
-              <Icon className={clsx("w-4 h-4 flex-shrink-0", active && "text-brand-400")} />
+              <Icon className="w-4 h-4 flex-shrink-0" />
               {item.label}
-              {item.showLive && <LiveIndicator className="ml-auto" />}
             </Link>
           );
         })}
       </nav>
 
-      {/* User info */}
-      <div className="px-4 py-4 border-t border-gray-800/60">
+      {/* User */}
+      <div className="px-4 py-4 border-t border-border-subtle">
         <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-brand-600/20 ring-1 ring-brand-500/20">
-            <User className="w-4 h-4 text-brand-300" />
+          <div className="flex items-center justify-center w-7 h-7 rounded-full bg-surface-3">
+            <User className="w-3.5 h-3.5 text-text-muted" />
           </div>
-          <div className="min-w-0">
-            <p className="text-sm font-medium text-gray-200 truncate">Admin</p>
-            <p className="text-[11px] text-gray-500 truncate">admin@keycard.dev</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[13px] font-medium text-text-secondary truncate">Admin</p>
+            <p className="text-[11px] text-text-muted truncate">admin@keycard.dev</p>
           </div>
-          <span className="ml-auto text-[10px] font-medium text-brand-400 bg-brand-500/10 px-1.5 py-0.5 rounded">
-            Admin
-          </span>
         </div>
       </div>
     </div>
@@ -99,34 +93,30 @@ export function Sidebar() {
 
   return (
     <>
-      {/* Mobile toggle */}
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 text-gray-300 lg:hidden"
+        className="fixed top-4 left-4 z-50 p-2 rounded-md bg-surface-2 text-text-muted lg:hidden"
       >
         {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
       </button>
 
-      {/* Mobile overlay */}
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 lg:hidden"
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
-      {/* Sidebar - mobile */}
       <aside
         className={clsx(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-[#0a0d14] border-r border-gray-800/50 transform transition-transform lg:hidden",
+          "fixed inset-y-0 left-0 z-40 w-60 bg-surface-1 border-r border-border-subtle transform transition-transform lg:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {nav}
       </aside>
 
-      {/* Sidebar - desktop */}
-      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-64 bg-[#0a0d14] border-r border-gray-800/50">
+      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-60 bg-surface-1 border-r border-border-subtle">
         {nav}
       </aside>
     </>
