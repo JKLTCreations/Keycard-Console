@@ -120,12 +120,14 @@ export function seedDemoData(db: Database.Database): void {
     userId, 'admin@acme.dev', 'Admin User', orgId, '2025-11-01T00:00:00.000Z'
   );
 
-  // Agents
+  // Agents (6 total)
   const agents = [
     { id: uuidv4(), name: 'deploy-bot', type: 'ci', config: JSON.stringify({ repo: 'acme/platform', branch: 'main', auto_deploy: true }), lastActive: '2026-03-21T08:30:00.000Z', created: '2025-12-01T10:00:00.000Z' },
     { id: uuidv4(), name: 'code-reviewer', type: 'coding-agent', config: JSON.stringify({ languages: ['typescript', 'python'], max_file_size: 5000 }), lastActive: '2026-03-21T09:15:00.000Z', created: '2025-12-05T14:00:00.000Z' },
     { id: uuidv4(), name: 'data-pipeline', type: 'service-bot', config: JSON.stringify({ schedule: '0 */6 * * *', source: 's3://acme-data', target: 'warehouse' }), lastActive: '2026-03-21T06:00:00.000Z', created: '2026-01-10T09:00:00.000Z' },
     { id: uuidv4(), name: 'security-scanner', type: 'monitoring', config: JSON.stringify({ scan_interval: 3600, severity_threshold: 'medium' }), lastActive: '2026-03-21T07:45:00.000Z', created: '2026-01-15T11:00:00.000Z' },
+    { id: uuidv4(), name: 'onboarding-agent', type: 'coding-agent', config: JSON.stringify({ template_repo: 'acme/dev-starter', auto_setup: true, slack_channel: '#new-devs' }), lastActive: '2026-03-20T16:30:00.000Z', created: '2026-02-01T09:00:00.000Z' },
+    { id: uuidv4(), name: 'incident-responder', type: 'service-bot', config: JSON.stringify({ pagerduty_service: 'acme-platform', escalation_policy: 'default', auto_acknowledge: true }), lastActive: '2026-03-21T04:15:00.000Z', created: '2026-02-15T11:00:00.000Z' },
   ];
 
   const insertAgent = db.prepare(
@@ -135,13 +137,15 @@ export function seedDemoData(db: Database.Database): void {
     insertAgent.run(a.id, a.name, a.type, 'active', orgId, userId, a.config, a.lastActive, a.created, a.lastActive);
   }
 
-  // Tools
+  // Tools (7 total)
   const tools = [
     { id: uuidv4(), name: 'GitHub', description: 'Source code management and CI/CD', category: 'developer', icon: 'github' },
     { id: uuidv4(), name: 'Linear', description: 'Issue tracking and project management', category: 'project-management', icon: 'linear' },
     { id: uuidv4(), name: 'Datadog', description: 'Infrastructure monitoring and APM', category: 'monitoring', icon: 'datadog' },
     { id: uuidv4(), name: 'AWS', description: 'Cloud infrastructure and services', category: 'cloud', icon: 'aws' },
     { id: uuidv4(), name: 'Slack', description: 'Team messaging and notifications', category: 'communication', icon: 'slack' },
+    { id: uuidv4(), name: 'PagerDuty', description: 'Incident management and on-call scheduling', category: 'incident-management', icon: 'pagerduty' },
+    { id: uuidv4(), name: 'Vercel', description: 'Frontend deployment and edge functions', category: 'deployment', icon: 'vercel' },
   ];
 
   const insertTool = db.prepare(
@@ -151,7 +155,7 @@ export function seedDemoData(db: Database.Database): void {
     insertTool.run(t.id, t.name, t.description, t.category, t.icon, orgId, '2025-12-01T00:00:00.000Z');
   }
 
-  // Policies
+  // Policies (3 total)
   const policies = [
     {
       id: uuidv4(),
@@ -164,6 +168,7 @@ export function seedDemoData(db: Database.Database): void {
         { tool: 'Linear', action: 'read', outcome: 'allow' },
         { tool: 'Linear', action: 'write', outcome: 'allow' },
         { tool: 'AWS', action: 'deploy', outcome: 'allow', condition: 'environment != production' },
+        { tool: 'Vercel', action: 'deploy', outcome: 'allow', condition: 'environment != production' },
         { tool: '*', action: 'delete', outcome: 'deny', reason: 'Delete operations require manual approval' },
       ]),
       created: '2025-12-10T10:00:00.000Z',
@@ -182,6 +187,23 @@ export function seedDemoData(db: Database.Database): void {
       ]),
       created: '2026-01-05T14:00:00.000Z',
     },
+    {
+      id: uuidv4(),
+      name: 'incident-response-policy',
+      version: 1,
+      status: 'active',
+      rules: JSON.stringify([
+        { tool: 'PagerDuty', action: 'read', outcome: 'allow' },
+        { tool: 'PagerDuty', action: 'acknowledge', outcome: 'allow' },
+        { tool: 'PagerDuty', action: 'resolve', outcome: 'escalate', reason: 'Incident resolution requires human confirmation' },
+        { tool: 'Slack', action: 'send', outcome: 'allow' },
+        { tool: 'Datadog', action: 'read', outcome: 'allow' },
+        { tool: 'AWS', action: 'restart', outcome: 'escalate', reason: 'Service restarts require on-call approval' },
+        { tool: 'AWS', action: 'scale', outcome: 'escalate', reason: 'Auto-scaling changes require approval' },
+        { tool: '*', action: 'delete', outcome: 'deny', reason: 'No delete operations during incidents' },
+      ]),
+      created: '2026-02-20T09:00:00.000Z',
+    },
   ];
 
   const insertPolicy = db.prepare(
@@ -191,19 +213,29 @@ export function seedDemoData(db: Database.Database): void {
     insertPolicy.run(p.id, p.name, p.version, p.status, p.rules, orgId, userId, p.created, p.created);
   }
 
-  // Sessions
+  // Sessions (14 total)
   const now = new Date('2026-03-21T10:00:00.000Z');
   const sessions = [
+    // deploy-bot sessions
     { id: uuidv4(), agentIdx: 0, status: 'completed', task: 'Deploy v2.4.1 to staging environment', startOffset: -7200, endOffset: -6600, toolCalls: 12 },
     { id: uuidv4(), agentIdx: 0, status: 'completed', task: 'Run integration tests on feature/auth-refactor', startOffset: -5400, endOffset: -4800, toolCalls: 8 },
+    { id: uuidv4(), agentIdx: 0, status: 'completed', task: 'Rollback staging deployment v2.4.0', startOffset: -86400, endOffset: -85800, toolCalls: 5 },
+    // code-reviewer sessions
     { id: uuidv4(), agentIdx: 1, status: 'completed', task: 'Review PR #847: Add rate limiting middleware', startOffset: -10800, endOffset: -9000, toolCalls: 15 },
     { id: uuidv4(), agentIdx: 1, status: 'running', task: 'Review PR #852: Database migration scripts', startOffset: -1800, endOffset: null, toolCalls: 6 },
+    { id: uuidv4(), agentIdx: 1, status: 'completed', task: 'Review PR #841: Fix memory leak in worker pool', startOffset: -72000, endOffset: -70200, toolCalls: 9 },
+    // data-pipeline sessions
     { id: uuidv4(), agentIdx: 2, status: 'completed', task: 'ETL pipeline: user analytics Q1 2026', startOffset: -14400, endOffset: -12600, toolCalls: 22 },
     { id: uuidv4(), agentIdx: 2, status: 'failed', task: 'Sync inventory data from warehouse', startOffset: -3600, endOffset: -3000, toolCalls: 4 },
+    // security-scanner sessions
     { id: uuidv4(), agentIdx: 3, status: 'completed', task: 'Weekly dependency vulnerability scan', startOffset: -21600, endOffset: -19800, toolCalls: 18 },
     { id: uuidv4(), agentIdx: 3, status: 'completed', task: 'Scan container images for CVEs', startOffset: -43200, endOffset: -41400, toolCalls: 11 },
-    { id: uuidv4(), agentIdx: 0, status: 'completed', task: 'Rollback staging deployment v2.4.0', startOffset: -86400, endOffset: -85800, toolCalls: 5 },
-    { id: uuidv4(), agentIdx: 1, status: 'completed', task: 'Review PR #841: Fix memory leak in worker pool', startOffset: -72000, endOffset: -70200, toolCalls: 9 },
+    // onboarding-agent sessions
+    { id: uuidv4(), agentIdx: 4, status: 'completed', task: 'Set up dev environment for new engineer: Sarah Chen', startOffset: -28800, endOffset: -27000, toolCalls: 14 },
+    { id: uuidv4(), agentIdx: 4, status: 'running', task: 'Configure CI pipeline for new microservice repo', startOffset: -900, endOffset: null, toolCalls: 3 },
+    // incident-responder sessions
+    { id: uuidv4(), agentIdx: 5, status: 'completed', task: 'Auto-triage: High CPU alert on platform-api', startOffset: -18000, endOffset: -17400, toolCalls: 10 },
+    { id: uuidv4(), agentIdx: 5, status: 'running', task: 'Investigate: Elevated error rate on checkout-service', startOffset: -600, endOffset: null, toolCalls: 7 },
   ];
 
   const insertSession = db.prepare(
@@ -215,7 +247,7 @@ export function seedDemoData(db: Database.Database): void {
     insertSession.run(s.id, agents[s.agentIdx].id, userId, s.status, s.task, startedAt, endedAt, s.toolCalls);
   }
 
-  // Audit events
+  // Audit events (48 total)
   const auditEvents: Array<{
     sessionIdx: number;
     agentIdx: number;
@@ -231,49 +263,73 @@ export function seedDemoData(db: Database.Database): void {
     { sessionIdx: 0, agentIdx: 0, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/commits', outcome: 'allow', reason: null, offsetSecs: -7150 },
     { sessionIdx: 0, agentIdx: 0, toolIdx: 3, action: 'deploy', resource: 'ecs/staging/platform-api', outcome: 'allow', reason: null, offsetSecs: -7000 },
     { sessionIdx: 0, agentIdx: 0, toolIdx: 3, action: 'deploy', resource: 'ecs/staging/platform-worker', outcome: 'allow', reason: null, offsetSecs: -6900 },
+    { sessionIdx: 0, agentIdx: 0, toolIdx: 6, action: 'deploy', resource: 'vercel/acme-dashboard/staging', outcome: 'allow', reason: null, offsetSecs: -6850 },
     { sessionIdx: 0, agentIdx: 0, toolIdx: 4, action: 'send', resource: '#deployments', outcome: 'allow', reason: null, offsetSecs: -6700 },
     // Session 1: deploy-bot tests
     { sessionIdx: 1, agentIdx: 0, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/845', outcome: 'allow', reason: null, offsetSecs: -5390 },
     { sessionIdx: 1, agentIdx: 0, toolIdx: 0, action: 'write', resource: 'repos/acme/platform/checks', outcome: 'allow', reason: null, offsetSecs: -5200 },
-    // Session 2: code-reviewer PR #847
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/847', outcome: 'allow', reason: null, offsetSecs: -10790 },
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/847/files', outcome: 'allow', reason: null, offsetSecs: -10600 },
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 0, action: 'comment', resource: 'repos/acme/platform/pulls/847/comments', outcome: 'allow', reason: null, offsetSecs: -10200 },
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 0, action: 'write', resource: 'repos/acme/platform/pulls/847', outcome: 'deny', reason: 'Code reviewers cannot push code', offsetSecs: -9800 },
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 1, action: 'read', resource: 'issues/ACM-2847', outcome: 'allow', reason: null, offsetSecs: -9500 },
-    { sessionIdx: 2, agentIdx: 1, toolIdx: 4, action: 'send', resource: '#code-reviews', outcome: 'allow', reason: null, offsetSecs: -9100 },
-    // Session 3: code-reviewer PR #852 (running)
-    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/852', outcome: 'allow', reason: null, offsetSecs: -1790 },
-    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/852/files', outcome: 'allow', reason: null, offsetSecs: -1600 },
-    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'write', resource: 'repos/acme/platform/contents/migrations', outcome: 'deny', reason: 'Code reviewers cannot push code', offsetSecs: -1400 },
-    // Session 4: data-pipeline ETL
-    { sessionIdx: 4, agentIdx: 2, toolIdx: 3, action: 'read', resource: 's3://acme-data/analytics/q1-2026', outcome: 'allow', reason: null, offsetSecs: -14390 },
-    { sessionIdx: 4, agentIdx: 2, toolIdx: 3, action: 'write', resource: 'redshift/analytics/user_metrics', outcome: 'allow', reason: null, offsetSecs: -14000 },
-    { sessionIdx: 4, agentIdx: 2, toolIdx: 3, action: 'delete', resource: 's3://acme-data/analytics/temp', outcome: 'deny', reason: 'Delete operations require manual approval', offsetSecs: -13500 },
-    { sessionIdx: 4, agentIdx: 2, toolIdx: 2, action: 'write', resource: 'metrics/pipeline.etl.duration', outcome: 'allow', reason: null, offsetSecs: -13000 },
-    // Session 5: data-pipeline failed sync
-    { sessionIdx: 5, agentIdx: 2, toolIdx: 3, action: 'read', resource: 's3://acme-data/inventory', outcome: 'allow', reason: null, offsetSecs: -3590 },
-    { sessionIdx: 5, agentIdx: 2, toolIdx: 3, action: 'write', resource: 'rds/inventory/sync', outcome: 'escalate', reason: 'Write to production database requires approval', offsetSecs: -3400 },
-    // Session 6: security-scanner weekly scan
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/dependabot/alerts', outcome: 'allow', reason: null, offsetSecs: -21590 },
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 0, action: 'read', resource: 'repos/acme/api-gateway/dependabot/alerts', outcome: 'allow', reason: null, offsetSecs: -21400 },
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-api/scan', outcome: 'allow', reason: null, offsetSecs: -21000 },
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 2, action: 'write', resource: 'metrics/security.vulnerabilities', outcome: 'allow', reason: null, offsetSecs: -20500 },
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 4, action: 'send', resource: '#security-alerts', outcome: 'allow', reason: null, offsetSecs: -20000 },
-    { sessionIdx: 6, agentIdx: 3, toolIdx: 1, action: 'write', resource: 'issues/SEC-142', outcome: 'allow', reason: null, offsetSecs: -19900 },
-    // Session 7: security-scanner container scan
-    { sessionIdx: 7, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-api', outcome: 'allow', reason: null, offsetSecs: -43190 },
-    { sessionIdx: 7, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-worker', outcome: 'allow', reason: null, offsetSecs: -43000 },
-    { sessionIdx: 7, agentIdx: 3, toolIdx: 3, action: 'delete', resource: 'ecr/images/platform-api:v2.3.0', outcome: 'deny', reason: 'Delete operations require manual approval', offsetSecs: -42500 },
-    { sessionIdx: 7, agentIdx: 3, toolIdx: 2, action: 'write', resource: 'metrics/security.container_scan', outcome: 'allow', reason: null, offsetSecs: -42000 },
-    // Session 8: deploy-bot rollback
-    { sessionIdx: 8, agentIdx: 0, toolIdx: 3, action: 'deploy', resource: 'ecs/staging/platform-api:v2.4.0', outcome: 'allow', reason: null, offsetSecs: -86390 },
-    { sessionIdx: 8, agentIdx: 0, toolIdx: 4, action: 'send', resource: '#deployments', outcome: 'allow', reason: null, offsetSecs: -86000 },
-    // Session 9: code-reviewer PR #841
-    { sessionIdx: 9, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/841', outcome: 'allow', reason: null, offsetSecs: -71990 },
-    { sessionIdx: 9, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/841/files', outcome: 'allow', reason: null, offsetSecs: -71500 },
-    { sessionIdx: 9, agentIdx: 1, toolIdx: 0, action: 'comment', resource: 'repos/acme/platform/pulls/841/comments', outcome: 'allow', reason: null, offsetSecs: -71000 },
-    { sessionIdx: 9, agentIdx: 1, toolIdx: 4, action: 'send', resource: '#code-reviews', outcome: 'allow', reason: null, offsetSecs: -70500 },
+    // Session 2: deploy-bot rollback
+    { sessionIdx: 2, agentIdx: 0, toolIdx: 3, action: 'deploy', resource: 'ecs/staging/platform-api:v2.4.0', outcome: 'allow', reason: null, offsetSecs: -86390 },
+    { sessionIdx: 2, agentIdx: 0, toolIdx: 4, action: 'send', resource: '#deployments', outcome: 'allow', reason: null, offsetSecs: -86000 },
+    // Session 3: code-reviewer PR #847
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/847', outcome: 'allow', reason: null, offsetSecs: -10790 },
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/847/files', outcome: 'allow', reason: null, offsetSecs: -10600 },
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'comment', resource: 'repos/acme/platform/pulls/847/comments', outcome: 'allow', reason: null, offsetSecs: -10200 },
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 0, action: 'write', resource: 'repos/acme/platform/pulls/847', outcome: 'deny', reason: 'Code reviewers cannot push code', offsetSecs: -9800 },
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 1, action: 'read', resource: 'issues/ACM-2847', outcome: 'allow', reason: null, offsetSecs: -9500 },
+    { sessionIdx: 3, agentIdx: 1, toolIdx: 4, action: 'send', resource: '#code-reviews', outcome: 'allow', reason: null, offsetSecs: -9100 },
+    // Session 4: code-reviewer PR #852 (running)
+    { sessionIdx: 4, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/852', outcome: 'allow', reason: null, offsetSecs: -1790 },
+    { sessionIdx: 4, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/852/files', outcome: 'allow', reason: null, offsetSecs: -1600 },
+    { sessionIdx: 4, agentIdx: 1, toolIdx: 0, action: 'write', resource: 'repos/acme/platform/contents/migrations', outcome: 'deny', reason: 'Code reviewers cannot push code', offsetSecs: -1400 },
+    // Session 5: code-reviewer PR #841
+    { sessionIdx: 5, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/841', outcome: 'allow', reason: null, offsetSecs: -71990 },
+    { sessionIdx: 5, agentIdx: 1, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/pulls/841/files', outcome: 'allow', reason: null, offsetSecs: -71500 },
+    { sessionIdx: 5, agentIdx: 1, toolIdx: 0, action: 'comment', resource: 'repos/acme/platform/pulls/841/comments', outcome: 'allow', reason: null, offsetSecs: -71000 },
+    { sessionIdx: 5, agentIdx: 1, toolIdx: 4, action: 'send', resource: '#code-reviews', outcome: 'allow', reason: null, offsetSecs: -70500 },
+    // Session 6: data-pipeline ETL
+    { sessionIdx: 6, agentIdx: 2, toolIdx: 3, action: 'read', resource: 's3://acme-data/analytics/q1-2026', outcome: 'allow', reason: null, offsetSecs: -14390 },
+    { sessionIdx: 6, agentIdx: 2, toolIdx: 3, action: 'write', resource: 'redshift/analytics/user_metrics', outcome: 'allow', reason: null, offsetSecs: -14000 },
+    { sessionIdx: 6, agentIdx: 2, toolIdx: 3, action: 'delete', resource: 's3://acme-data/analytics/temp', outcome: 'deny', reason: 'Delete operations require manual approval', offsetSecs: -13500 },
+    { sessionIdx: 6, agentIdx: 2, toolIdx: 2, action: 'write', resource: 'metrics/pipeline.etl.duration', outcome: 'allow', reason: null, offsetSecs: -13000 },
+    // Session 7: data-pipeline failed sync
+    { sessionIdx: 7, agentIdx: 2, toolIdx: 3, action: 'read', resource: 's3://acme-data/inventory', outcome: 'allow', reason: null, offsetSecs: -3590 },
+    { sessionIdx: 7, agentIdx: 2, toolIdx: 3, action: 'write', resource: 'rds/inventory/sync', outcome: 'escalate', reason: 'Write to production database requires approval', offsetSecs: -3400 },
+    // Session 8: security-scanner weekly scan
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 0, action: 'read', resource: 'repos/acme/platform/dependabot/alerts', outcome: 'allow', reason: null, offsetSecs: -21590 },
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 0, action: 'read', resource: 'repos/acme/api-gateway/dependabot/alerts', outcome: 'allow', reason: null, offsetSecs: -21400 },
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-api/scan', outcome: 'allow', reason: null, offsetSecs: -21000 },
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 2, action: 'write', resource: 'metrics/security.vulnerabilities', outcome: 'allow', reason: null, offsetSecs: -20500 },
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 4, action: 'send', resource: '#security-alerts', outcome: 'allow', reason: null, offsetSecs: -20000 },
+    { sessionIdx: 8, agentIdx: 3, toolIdx: 1, action: 'write', resource: 'issues/SEC-142', outcome: 'allow', reason: null, offsetSecs: -19900 },
+    // Session 9: security-scanner container scan
+    { sessionIdx: 9, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-api', outcome: 'allow', reason: null, offsetSecs: -43190 },
+    { sessionIdx: 9, agentIdx: 3, toolIdx: 3, action: 'read', resource: 'ecr/images/platform-worker', outcome: 'allow', reason: null, offsetSecs: -43000 },
+    { sessionIdx: 9, agentIdx: 3, toolIdx: 3, action: 'delete', resource: 'ecr/images/platform-api:v2.3.0', outcome: 'deny', reason: 'Delete operations require manual approval', offsetSecs: -42500 },
+    { sessionIdx: 9, agentIdx: 3, toolIdx: 2, action: 'write', resource: 'metrics/security.container_scan', outcome: 'allow', reason: null, offsetSecs: -42000 },
+    // Session 10: onboarding-agent setup
+    { sessionIdx: 10, agentIdx: 4, toolIdx: 0, action: 'read', resource: 'repos/acme/dev-starter/contents', outcome: 'allow', reason: null, offsetSecs: -28790 },
+    { sessionIdx: 10, agentIdx: 4, toolIdx: 0, action: 'write', resource: 'repos/acme/sarah-chen-onboard', outcome: 'allow', reason: null, offsetSecs: -28500 },
+    { sessionIdx: 10, agentIdx: 4, toolIdx: 4, action: 'send', resource: '#new-devs', outcome: 'allow', reason: null, offsetSecs: -28000 },
+    { sessionIdx: 10, agentIdx: 4, toolIdx: 1, action: 'write', resource: 'issues/ONB-78', outcome: 'allow', reason: null, offsetSecs: -27500 },
+    { sessionIdx: 10, agentIdx: 4, toolIdx: 0, action: 'write', resource: 'orgs/acme/teams/platform/members', outcome: 'deny', reason: 'Cannot modify team membership directly', offsetSecs: -27200 },
+    // Session 11: onboarding-agent CI pipeline (running)
+    { sessionIdx: 11, agentIdx: 4, toolIdx: 0, action: 'read', resource: 'repos/acme/checkout-service/.github/workflows', outcome: 'allow', reason: null, offsetSecs: -890 },
+    { sessionIdx: 11, agentIdx: 4, toolIdx: 6, action: 'deploy', resource: 'vercel/checkout-service/preview', outcome: 'allow', reason: null, offsetSecs: -600 },
+    // Session 12: incident-responder high CPU
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 5, action: 'read', resource: 'incidents/INC-4521', outcome: 'allow', reason: null, offsetSecs: -17990 },
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 5, action: 'acknowledge', resource: 'incidents/INC-4521', outcome: 'allow', reason: null, offsetSecs: -17800 },
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 2, action: 'read', resource: 'metrics/platform-api.cpu.usage', outcome: 'allow', reason: null, offsetSecs: -17600 },
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 3, action: 'restart', resource: 'ecs/production/platform-api', outcome: 'escalate', reason: 'Service restarts require on-call approval', offsetSecs: -17400 },
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 4, action: 'send', resource: '#incidents', outcome: 'allow', reason: null, offsetSecs: -17300 },
+    { sessionIdx: 12, agentIdx: 5, toolIdx: 5, action: 'resolve', resource: 'incidents/INC-4521', outcome: 'escalate', reason: 'Incident resolution requires human confirmation', offsetSecs: -17500 },
+    // Session 13: incident-responder checkout errors (running)
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 5, action: 'read', resource: 'incidents/INC-4523', outcome: 'allow', reason: null, offsetSecs: -590 },
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 5, action: 'acknowledge', resource: 'incidents/INC-4523', outcome: 'allow', reason: null, offsetSecs: -500 },
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 2, action: 'read', resource: 'metrics/checkout-service.error_rate', outcome: 'allow', reason: null, offsetSecs: -400 },
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 3, action: 'scale', resource: 'ecs/production/checkout-service', outcome: 'escalate', reason: 'Auto-scaling changes require approval', offsetSecs: -300 },
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 4, action: 'send', resource: '#incidents', outcome: 'allow', reason: null, offsetSecs: -200 },
+    { sessionIdx: 13, agentIdx: 5, toolIdx: 3, action: 'delete', resource: 'ecs/production/checkout-service-old', outcome: 'deny', reason: 'No delete operations during incidents', offsetSecs: -150 },
   ];
 
   const insertEvent = db.prepare(
@@ -291,11 +347,15 @@ export function seedDemoData(db: Database.Database): void {
 
   // Credentials
   const creds = [
-    { sessionIdx: 0, agentIdx: 0, scope: 'github:read,write aws:deploy', ttl: 3600, status: 'expired' as const },
-    { sessionIdx: 2, agentIdx: 1, scope: 'github:read,comment linear:read slack:send', ttl: 7200, status: 'expired' as const },
-    { sessionIdx: 3, agentIdx: 1, scope: 'github:read,comment', ttl: 3600, status: 'active' as const },
-    { sessionIdx: 4, agentIdx: 2, scope: 'aws:read,write datadog:write', ttl: 7200, status: 'expired' as const },
-    { sessionIdx: 6, agentIdx: 3, scope: 'github:read aws:read datadog:write linear:write slack:send', ttl: 7200, status: 'expired' as const },
+    { sessionIdx: 0, agentIdx: 0, scope: 'github:read,write aws:deploy vercel:deploy', ttl: 3600, status: 'expired' as const },
+    { sessionIdx: 3, agentIdx: 1, scope: 'github:read,comment linear:read slack:send', ttl: 7200, status: 'expired' as const },
+    { sessionIdx: 4, agentIdx: 1, scope: 'github:read,comment', ttl: 3600, status: 'active' as const },
+    { sessionIdx: 6, agentIdx: 2, scope: 'aws:read,write datadog:write', ttl: 7200, status: 'expired' as const },
+    { sessionIdx: 8, agentIdx: 3, scope: 'github:read aws:read datadog:write linear:write slack:send', ttl: 7200, status: 'expired' as const },
+    { sessionIdx: 10, agentIdx: 4, scope: 'github:read,write linear:write slack:send', ttl: 3600, status: 'expired' as const },
+    { sessionIdx: 11, agentIdx: 4, scope: 'github:read vercel:deploy', ttl: 3600, status: 'active' as const },
+    { sessionIdx: 12, agentIdx: 5, scope: 'pagerduty:read,acknowledge datadog:read aws:restart slack:send', ttl: 3600, status: 'expired' as const },
+    { sessionIdx: 13, agentIdx: 5, scope: 'pagerduty:read,acknowledge datadog:read aws:scale slack:send', ttl: 3600, status: 'active' as const },
   ];
 
   const insertCred = db.prepare(

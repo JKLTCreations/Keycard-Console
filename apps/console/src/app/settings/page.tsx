@@ -1,7 +1,7 @@
 "use client";
 
 import { PageHeader } from "@/components/page-header";
-import { Settings, KeyRound, Globe, Bell, Shield } from "lucide-react";
+import { KeyRound, Globe, Bell, Shield } from "lucide-react";
 
 const settingsSections = [
   {
@@ -36,26 +36,27 @@ export default function SettingsPage() {
       <PageHeader title="Settings" description="Configure your Keycard instance" />
 
       <div className="space-y-3">
-        {settingsSections.map((section) => (
+        {settingsSections.map((section, i) => (
           <div
             key={section.title}
-            className="flex items-center gap-4 rounded-xl border border-gray-800 bg-gray-900 p-5 hover:border-gray-700 transition-colors cursor-pointer"
+            className="flex items-center gap-4 rounded-xl border border-gray-800/60 bg-gray-900/50 p-5 hover:border-brand-500/20 hover:shadow-glow-sm transition-all cursor-pointer animate-fade-in"
+            style={{ animationDelay: `${i * 50}ms` }}
           >
-            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-gray-800 text-gray-400 flex-shrink-0">
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-brand-500/10 text-brand-400 flex-shrink-0">
               <section.icon className="w-5 h-5" />
             </div>
             <div className="flex-1 min-w-0">
               <h3 className="text-sm font-medium text-gray-200">{section.title}</h3>
               <p className="text-xs text-gray-500 mt-0.5">{section.description}</p>
             </div>
-            <span className="text-xs text-gray-500 bg-gray-800 px-2.5 py-1 rounded-md flex-shrink-0">
+            <span className="text-xs text-gray-500 bg-gray-800/50 px-2.5 py-1 rounded-md flex-shrink-0">
               {section.status}
             </span>
           </div>
         ))}
       </div>
 
-      <div className="mt-8 rounded-xl border border-gray-800 bg-gray-900 p-5">
+      <div className="mt-8 rounded-xl border border-gray-800/60 bg-gray-900/50 p-5">
         <p className="text-sm text-gray-500 text-center">
           Full settings configuration coming in a future release.
         </p>

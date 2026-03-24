@@ -28,7 +28,22 @@ const columns: Column<Policy>[] = [
   {
     key: "rules",
     header: "Rules",
-    render: (p) => <span className="text-gray-400 tabular-nums">{p.rules?.length || 0}</span>,
+    render: (p) => {
+      const rules = p.rules || [];
+      const allows = rules.filter((r) => r.outcome === "allow").length;
+      const denies = rules.filter((r) => r.outcome === "deny").length;
+      const escalates = rules.filter((r) => r.outcome === "escalate").length;
+      return (
+        <div className="flex items-center gap-2">
+          <span className="text-gray-400 tabular-nums text-xs">{rules.length} rules</span>
+          <span className="text-[10px] text-gray-600">
+            ({allows > 0 && <span className="text-emerald-500">{allows} allow</span>}
+            {denies > 0 && <>{allows > 0 && ", "}<span className="text-red-400">{denies} deny</span></>}
+            {escalates > 0 && <>{(allows > 0 || denies > 0) && ", "}<span className="text-amber-400">{escalates} escalate</span></>})
+          </span>
+        </div>
+      );
+    },
   },
   {
     key: "updated_at",
@@ -58,7 +73,7 @@ export default function PoliciesPage() {
         title="Policies"
         description="Access control policies for agent authorization"
         action={
-          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-indigo-600 text-white hover:bg-indigo-500 transition-colors">
+          <button className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition-colors shadow-glow-sm">
             <Plus className="w-4 h-4" />
             Create Policy
           </button>
@@ -67,7 +82,7 @@ export default function PoliciesPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-gray-700 border-t-indigo-500 rounded-full animate-spin" />
+          <div className="w-6 h-6 border-2 border-gray-700 border-t-brand-500 rounded-full animate-spin" />
         </div>
       ) : policies.length === 0 ? (
         <EmptyState

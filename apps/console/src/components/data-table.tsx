@@ -37,10 +37,10 @@ export function DataTable<T extends Record<string, any>>({
   const isClickable = !!onRowClick || !!rowHref;
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-800">
+    <div className="overflow-x-auto rounded-lg border border-gray-800/60">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-800 bg-gray-900/50">
+          <tr className="border-b border-gray-800/60 bg-gray-900/30">
             {columns.map((col) => (
               <th
                 key={col.key}
@@ -51,16 +51,16 @@ export function DataTable<T extends Record<string, any>>({
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-800/50">
+        <tbody className="divide-y divide-gray-800/30">
           {data.map((item, i) => (
             <tr
               key={(item[keyField] as string) || i}
               onClick={() => handleRowClick(item)}
-              className={`transition-colors ${
+              className={`transition-all ${
                 isClickable
-                  ? "cursor-pointer hover:bg-gray-800/50"
+                  ? "cursor-pointer hover:bg-brand-600/5 hover:border-l-2 hover:border-l-brand-500/50"
                   : ""
-              }`}
+              } ${i % 2 === 1 ? "bg-gray-900/20" : ""}`}
             >
               {columns.map((col) => (
                 <td
