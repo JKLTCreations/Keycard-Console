@@ -214,7 +214,7 @@ export function seedDemoData(db: Database.Database): void {
   }
 
   // Sessions (14 total)
-  const now = new Date('2026-03-21T10:00:00.000Z');
+  const now = new Date();
   const sessions = [
     // deploy-bot sessions
     { id: uuidv4(), agentIdx: 0, status: 'completed', task: 'Deploy v2.4.1 to staging environment', startOffset: -7200, endOffset: -6600, toolCalls: 12 },
