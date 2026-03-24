@@ -18,15 +18,15 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div className="flex flex-col items-center justify-center py-16 text-center">
-      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gray-800/50 border border-gray-700/30 mb-4">
-        <Icon className="w-6 h-6 text-gray-500" />
+      <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-surface-2 mb-4">
+        <Icon className="w-5 h-5 text-text-muted" />
       </div>
-      <h3 className="text-sm font-medium text-gray-300">{title}</h3>
-      <p className="mt-1 text-sm text-gray-500 max-w-sm">{description}</p>
+      <h3 className="text-sm font-medium text-text-secondary">{title}</h3>
+      <p className="mt-1 text-[13px] text-text-muted max-w-sm">{description}</p>
       {actionLabel && actionHref && (
         <Link
           href={actionHref}
-          className="mt-4 px-4 py-2 text-sm font-medium rounded-lg bg-brand-600 text-white hover:bg-brand-500 transition-colors shadow-glow-sm"
+          className="mt-4 px-4 py-2 text-[13px] font-medium rounded-md bg-surface-3 text-text-primary hover:bg-[#ffffff10] transition-colors border border-border"
         >
           {actionLabel}
         </Link>

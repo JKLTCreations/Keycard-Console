@@ -1,21 +1,19 @@
 import { clsx } from "clsx";
 
 const variants = {
-  success: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
-  warning: "bg-amber-500/10 text-amber-400 border-amber-500/20",
-  danger: "bg-red-500/10 text-red-400 border-red-500/20",
-  info: "bg-blue-500/10 text-blue-400 border-blue-500/20",
-  neutral: "bg-gray-500/10 text-gray-400 border-gray-500/20",
-  purple: "bg-purple-500/10 text-purple-400 border-purple-500/20",
+  success: "text-[#30a46c] bg-[#30a46c0a] border-[#30a46c20]",
+  warning: "text-[#f5a623] bg-[#f5a6230a] border-[#f5a62320]",
+  danger: "text-[#ec5d5e] bg-[#ec5d5e0a] border-[#ec5d5e20]",
+  info: "text-text-secondary bg-[#ffffff05] border-border",
+  neutral: "text-text-muted bg-[#ffffff05] border-border",
 };
 
 const dotColors = {
-  success: "bg-emerald-400",
-  warning: "bg-amber-400",
-  danger: "bg-red-400",
-  info: "bg-blue-400",
-  neutral: "bg-gray-400",
-  purple: "bg-purple-400",
+  success: "bg-[#30a46c]",
+  warning: "bg-[#f5a623]",
+  danger: "bg-[#ec5d5e]",
+  info: "bg-text-secondary",
+  neutral: "bg-text-muted",
 };
 
 const statusToVariant: Record<string, keyof typeof variants> = {
@@ -24,7 +22,7 @@ const statusToVariant: Record<string, keyof typeof variants> = {
   allow: "success",
   approved: "success",
   enabled: "success",
-  completed: "success",
+  completed: "info",
   revoked: "danger",
   denied: "danger",
   deny: "danger",
@@ -35,7 +33,7 @@ const statusToVariant: Record<string, keyof typeof variants> = {
   escalate: "warning",
   escalated: "warning",
   pending: "warning",
-  observe: "purple",
+  observe: "info",
   draft: "info",
   idle: "neutral",
   archived: "neutral",
@@ -53,12 +51,12 @@ export function StatusBadge({ status, variant, className }: StatusBadgeProps) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-xs font-medium border",
+        "inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[11px] font-medium border",
         variants[v],
         className
       )}
     >
-      <span className={clsx("w-1.5 h-1.5 rounded-full", dotColors[v])} />
+      <span className={clsx("w-1 h-1 rounded-full", dotColors[v])} />
       {status}
     </span>
   );

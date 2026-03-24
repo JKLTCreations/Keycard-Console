@@ -18,9 +18,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} bg-[#06080f] text-gray-100`}>
+      <body className={`${inter.className} bg-surface-0 text-text-primary`}>
         <Sidebar />
-        <div className="lg:pl-64 min-h-screen flex flex-col">
+        <div className="lg:pl-60 min-h-screen flex flex-col">
           <Header />
           <main className="flex-1 p-6">{children}</main>
         </div>

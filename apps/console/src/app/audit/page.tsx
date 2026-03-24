@@ -17,7 +17,7 @@ const columns: Column<AuditEvent>[] = [
     key: "created_at",
     header: "Time",
     render: (e) => (
-      <span className="text-gray-500 text-xs whitespace-nowrap">
+      <span className="text-text-faint text-[11px] whitespace-nowrap">
         {formatDistanceToNow(new Date(e.created_at), { addSuffix: true })}
       </span>
     ),
@@ -25,26 +25,22 @@ const columns: Column<AuditEvent>[] = [
   {
     key: "agent_name",
     header: "Agent",
-    render: (e) => <span className="font-mono text-xs text-gray-300">{e.agent_name || e.agent_id.slice(0, 8)}</span>,
+    render: (e) => <span className="font-mono text-[11px] text-text-secondary">{e.agent_name || e.agent_id.slice(0, 8)}</span>,
   },
   {
     key: "tool_name",
     header: "Tool",
-    render: (e) => <span className="text-xs text-gray-400">{e.tool_name || "-"}</span>,
+    render: (e) => <span className="text-[11px] text-text-muted">{e.tool_name || "-"}</span>,
   },
   {
     key: "action",
     header: "Action",
-    render: (e) => <span className="font-mono text-xs text-gray-300">{e.action}</span>,
+    render: (e) => <span className="font-mono text-[11px] text-text-secondary">{e.action}</span>,
   },
   {
     key: "resource",
     header: "Resource",
-    render: (e) => (
-      <span className="font-mono text-xs text-gray-400 max-w-xs truncate block" title={e.resource}>
-        {e.resource}
-      </span>
-    ),
+    render: (e) => <span className="font-mono text-[11px] text-text-muted max-w-xs truncate block">{e.resource}</span>,
   },
   {
     key: "outcome",
@@ -54,9 +50,7 @@ const columns: Column<AuditEvent>[] = [
   {
     key: "reason",
     header: "Reason",
-    render: (e) => (
-      <span className="text-xs text-gray-500 max-w-[200px] truncate block">{e.reason || "-"}</span>
-    ),
+    render: (e) => <span className="text-[11px] text-text-faint max-w-[180px] truncate block">{e.reason || "-"}</span>,
   },
 ];
 
@@ -80,24 +74,20 @@ export default function AuditPage() {
     <div className="max-w-7xl mx-auto">
       <PageHeader title="Audit Log" description="Complete record of agent actions and policy decisions" />
 
-      {/* Filter bar */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-1.5 mb-6">
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={clsx(
-              "px-3 py-1.5 text-xs font-medium rounded-lg transition-all",
+              "px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors",
               filter === f
-                ? f === "Allow" ? "bg-emerald-500/15 text-emerald-300 border border-emerald-500/30"
-                : f === "Deny" ? "bg-red-500/15 text-red-300 border border-red-500/30"
-                : f === "Escalate" ? "bg-amber-500/15 text-amber-300 border border-amber-500/30"
-                : "bg-brand-600/20 text-brand-300 border border-brand-500/30"
-                : "bg-gray-800/30 text-gray-500 border border-gray-800/50 hover:text-gray-300 hover:border-gray-700/50"
+                ? "bg-[#ffffff08] text-text-secondary border border-border-hover"
+                : "text-text-muted border border-transparent hover:text-text-secondary"
             )}
           >
             {f}
-            <span className="ml-1.5 text-[10px] tabular-nums">
+            <span className="ml-1 tabular-nums text-text-faint">
               {f === "All" ? events.length : events.filter((e) => e.outcome.toLowerCase() === f.toLowerCase()).length}
             </span>
           </button>
@@ -106,14 +96,10 @@ export default function AuditPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-gray-700 border-t-brand-500 rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
-        <EmptyState
-          icon={ScrollText}
-          title="No audit events"
-          description="Audit events will appear here as agents make requests."
-        />
+        <EmptyState icon={ScrollText} title="No audit events" description="Audit events will appear here as agents make requests." />
       ) : (
         <DataTable columns={columns} data={filtered} />
       )}

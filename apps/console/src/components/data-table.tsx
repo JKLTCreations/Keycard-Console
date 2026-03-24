@@ -37,35 +37,35 @@ export function DataTable<T extends Record<string, any>>({
   const isClickable = !!onRowClick || !!rowHref;
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-800/60">
+    <div className="overflow-x-auto rounded-lg border border-border">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-gray-800/60 bg-gray-900/30">
+          <tr className="border-b border-border bg-surface-1">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`px-4 py-3 text-xs font-medium text-gray-500 uppercase tracking-wider ${col.className || ""}`}
+                className={`px-4 py-3 text-xs font-medium text-text-muted uppercase tracking-wider ${col.className || ""}`}
               >
                 {col.header}
               </th>
             ))}
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-800/30">
+        <tbody className="divide-y divide-border-subtle">
           {data.map((item, i) => (
             <tr
               key={(item[keyField] as string) || i}
               onClick={() => handleRowClick(item)}
-              className={`transition-all ${
+              className={`transition-colors ${
                 isClickable
-                  ? "cursor-pointer hover:bg-brand-600/5 hover:border-l-2 hover:border-l-brand-500/50"
+                  ? "cursor-pointer hover:bg-[#ffffff05]"
                   : ""
-              } ${i % 2 === 1 ? "bg-gray-900/20" : ""}`}
+              }`}
             >
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`px-4 py-3 text-gray-300 ${col.className || ""}`}
+                  className={`px-4 py-3 text-text-secondary ${col.className || ""}`}
                 >
                   {col.render
                     ? col.render(item)

@@ -17,12 +17,12 @@ const columns: Column<Session>[] = [
   {
     key: "id",
     header: "ID",
-    render: (s) => <span className="font-mono text-xs text-gray-400">{s.id.slice(0, 12)}</span>,
+    render: (s) => <span className="font-mono text-[11px] text-text-muted">{s.id.slice(0, 12)}</span>,
   },
   {
     key: "agent_name",
     header: "Agent",
-    render: (s) => <span className="font-medium text-gray-200">{s.agent_name || s.agent_id.slice(0, 8)}</span>,
+    render: (s) => <span className="text-[13px] text-text-secondary">{s.agent_name || s.agent_id.slice(0, 8)}</span>,
   },
   {
     key: "status",
@@ -37,22 +37,18 @@ const columns: Column<Session>[] = [
   {
     key: "task_description",
     header: "Task",
-    render: (s) => (
-      <span className="text-gray-400 text-xs max-w-xs truncate block" title={s.task_description}>
-        {s.task_description}
-      </span>
-    ),
+    render: (s) => <span className="text-text-muted text-[11px] max-w-xs truncate block">{s.task_description}</span>,
   },
   {
     key: "tool_call_count",
     header: "Tool Calls",
-    render: (s) => <span className="text-gray-400 tabular-nums">{s.tool_call_count}</span>,
+    render: (s) => <span className="text-text-muted tabular-nums text-[13px]">{s.tool_call_count}</span>,
   },
   {
     key: "started_at",
-    header: "Started At",
+    header: "Started",
     render: (s) => (
-      <span className="text-gray-500 text-xs">
+      <span className="text-text-faint text-[11px]">
         {formatDistanceToNow(new Date(s.started_at), { addSuffix: true })}
       </span>
     ),
@@ -79,22 +75,21 @@ export default function SessionsPage() {
     <div className="max-w-7xl mx-auto">
       <PageHeader title="Sessions" description="View active and historical agent sessions" />
 
-      {/* Filter chips */}
-      <div className="flex items-center gap-2 mb-6">
+      <div className="flex items-center gap-1.5 mb-6">
         {filters.map((f) => (
           <button
             key={f}
             onClick={() => setFilter(f)}
             className={clsx(
-              "px-3 py-1.5 text-xs font-medium rounded-lg transition-all",
+              "px-3 py-1.5 text-[11px] font-medium rounded-md transition-colors",
               filter === f
-                ? "bg-brand-600/20 text-brand-300 border border-brand-500/30"
-                : "bg-gray-800/30 text-gray-500 border border-gray-800/50 hover:text-gray-300 hover:border-gray-700/50"
+                ? "bg-[#ffffff08] text-text-secondary border border-border-hover"
+                : "text-text-muted border border-transparent hover:text-text-secondary"
             )}
           >
             {f}
             {f !== "All" && (
-              <span className="ml-1.5 text-[10px] tabular-nums">
+              <span className="ml-1 tabular-nums text-text-faint">
                 {sessions.filter((s) => s.status.toLowerCase() === f.toLowerCase()).length}
               </span>
             )}
@@ -104,7 +99,7 @@ export default function SessionsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-6 h-6 border-2 border-gray-700 border-t-brand-500 rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState
@@ -113,11 +108,7 @@ export default function SessionsPage() {
           description="Sessions will appear here when agents start making requests."
         />
       ) : (
-        <DataTable
-          columns={columns}
-          data={filtered}
-          rowHref={(s) => `/sessions/${s.id}`}
-        />
+        <DataTable columns={columns} data={filtered} rowHref={(s) => `/sessions/${s.id}`} />
       )}
     </div>
   );

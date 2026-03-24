@@ -7,13 +7,6 @@ import { StatusBadge } from "@/components/status-badge";
 import { getPolicy, Policy } from "@/lib/api";
 import { ArrowLeft } from "lucide-react";
 import { format } from "date-fns";
-import { clsx } from "clsx";
-
-const outcomeBorder: Record<string, string> = {
-  allow: "border-l-emerald-500 bg-emerald-500/5",
-  deny: "border-l-red-500 bg-red-500/5",
-  escalate: "border-l-amber-500 bg-amber-500/5",
-};
 
 export default function PolicyDetailPage() {
   const params = useParams();
@@ -31,14 +24,14 @@ export default function PolicyDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="w-6 h-6 border-2 border-gray-700 border-t-brand-500 rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!policy) {
     return (
-      <div className="max-w-5xl mx-auto text-center py-16 text-gray-400">
+      <div className="max-w-5xl mx-auto text-center py-16 text-text-muted">
         Policy not found.
       </div>
     );
@@ -51,70 +44,59 @@ export default function PolicyDetailPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
-      <Link
-        href="/policies"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-300 mb-4 transition-colors"
-      >
-        <ArrowLeft className="w-4 h-4" />
+      <Link href="/policies" className="inline-flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors">
+        <ArrowLeft className="w-3.5 h-3.5" />
         Back to Policies
       </Link>
 
       <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-2xl font-bold text-gray-100">{policy.name}</h1>
+        <h1 className="text-xl font-semibold text-text-primary">{policy.name}</h1>
         <StatusBadge status={policy.status} />
-        <span className="font-mono text-xs text-gray-500">v{policy.version}</span>
+        <span className="font-mono text-[11px] text-text-muted">v{policy.version}</span>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <div className="rounded-lg border border-gray-800/60 bg-gray-900/50 p-4">
-          <p className="text-xs text-gray-500 font-medium mb-1">Policy ID</p>
-          <p className="text-sm text-gray-200 font-mono">{(params.id as string).slice(0, 12)}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+        <div className="rounded-md border border-border bg-surface-1 p-3">
+          <p className="text-[11px] text-text-faint font-medium mb-1">Policy ID</p>
+          <p className="text-[13px] text-text-secondary font-mono">{(params.id as string).slice(0, 12)}</p>
         </div>
-        <div className="rounded-lg border border-gray-800/60 bg-gray-900/50 p-4">
-          <p className="text-xs text-gray-500 font-medium mb-1">Total Rules</p>
-          <p className="text-sm text-gray-200">{rules.length}</p>
+        <div className="rounded-md border border-border bg-surface-1 p-3">
+          <p className="text-[11px] text-text-faint font-medium mb-1">Total Rules</p>
+          <p className="text-[13px] text-text-secondary">{rules.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-800/60 bg-gray-900/50 p-4">
-          <p className="text-xs text-gray-500 font-medium mb-1">Breakdown</p>
-          <div className="flex items-center gap-2 text-xs">
-            {allows > 0 && <span className="text-emerald-400">{allows} allow</span>}
-            {denies > 0 && <span className="text-red-400">{denies} deny</span>}
-            {escalates > 0 && <span className="text-amber-400">{escalates} escalate</span>}
+        <div className="rounded-md border border-border bg-surface-1 p-3">
+          <p className="text-[11px] text-text-faint font-medium mb-1">Breakdown</p>
+          <div className="flex items-center gap-2 text-[11px]">
+            {allows > 0 && <span className="text-[#30a46c]">{allows} allow</span>}
+            {denies > 0 && <span className="text-[#ec5d5e]">{denies} deny</span>}
+            {escalates > 0 && <span className="text-[#f5a623]">{escalates} escalate</span>}
           </div>
         </div>
-        <div className="rounded-lg border border-gray-800/60 bg-gray-900/50 p-4">
-          <p className="text-xs text-gray-500 font-medium mb-1">Last Modified</p>
-          <p className="text-sm text-gray-200">{format(new Date(policy.updated_at), "MMM d, yyyy")}</p>
+        <div className="rounded-md border border-border bg-surface-1 p-3">
+          <p className="text-[11px] text-text-faint font-medium mb-1">Last Modified</p>
+          <p className="text-[13px] text-text-secondary">{format(new Date(policy.updated_at), "MMM d, yyyy")}</p>
         </div>
       </div>
 
-      {/* Rules as cards */}
       <div>
-        <h3 className="text-sm font-medium text-gray-400 mb-4">Rules</h3>
-        <div className="space-y-2">
+        <h3 className="text-[13px] font-medium text-text-muted mb-3">Rules</h3>
+        <div className="space-y-1.5">
           {rules.map((rule, i) => (
-            <div
-              key={i}
-              className={clsx(
-                "rounded-lg border border-gray-800/40 p-4 border-l-2 transition-colors hover:bg-gray-800/20 animate-fade-in",
-                outcomeBorder[rule.outcome] || "border-l-gray-500"
-              )}
-              style={{ animationDelay: `${i * 50}ms` }}
-            >
+            <div key={i} className="rounded-md border border-border bg-surface-1 p-3">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-4 text-[13px]">
                   <div>
-                    <span className="text-[10px] text-gray-600 uppercase tracking-wider">Tool</span>
-                    <p className="font-mono text-sm text-gray-200">{rule.tool}</p>
+                    <span className="text-[10px] text-text-faint uppercase tracking-wider block">Tool</span>
+                    <span className="font-mono text-text-secondary">{rule.tool}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-gray-600 uppercase tracking-wider">Action</span>
-                    <p className="font-mono text-sm text-gray-200">{rule.action}</p>
+                    <span className="text-[10px] text-text-faint uppercase tracking-wider block">Action</span>
+                    <span className="font-mono text-text-secondary">{rule.action}</span>
                   </div>
                   {(rule as any).condition && (
                     <div>
-                      <span className="text-[10px] text-gray-600 uppercase tracking-wider">Condition</span>
-                      <p className="font-mono text-xs text-amber-300">{(rule as any).condition}</p>
+                      <span className="text-[10px] text-text-faint uppercase tracking-wider block">Condition</span>
+                      <span className="font-mono text-[11px] text-text-muted">{(rule as any).condition}</span>
                     </div>
                   )}
                 </div>
@@ -124,7 +106,7 @@ export default function PolicyDetailPage() {
                 />
               </div>
               {(rule as any).reason && (
-                <p className="text-xs text-gray-500 mt-2">{(rule as any).reason}</p>
+                <p className="text-[11px] text-text-faint mt-2">{(rule as any).reason}</p>
               )}
             </div>
           ))}
