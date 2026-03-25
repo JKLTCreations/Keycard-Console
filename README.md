@@ -168,3 +168,13 @@ Base URL: `http://localhost:3001/v1`
 The API uses a local SQLite database stored at `api/data/keycard.db`. Delete this file and restart the API to reset all data to the demo seed.
 
 The console uses a hardcoded JWT token for development. In production, this would be replaced with a proper OAuth/OIDC flow via NextAuth.js.
+
+
+
+
+
+
+
+
+https://github.com/user-attachments/assets/88da1d02-0024-4ccf-a73c-1c7e13098efc
+
