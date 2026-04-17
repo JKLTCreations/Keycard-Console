@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
+import Image from "next/image";
 import {
-  KeyRound,
   LayoutDashboard,
   MonitorDot,
   Bot,
@@ -43,9 +43,19 @@ export function Sidebar() {
       {/* Brand */}
       <div className="px-5 py-5">
         <div className="flex items-center gap-3">
+<<<<<<< Updated upstream
           <div className="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/10 ring-1 ring-accent/20">
             <KeyRound className="w-4 h-4 text-accent" />
           </div>
+=======
+          <Image
+            src="/keycard-logo.webp"
+            alt="Keycard"
+            width={28}
+            height={28}
+            className="w-7 h-7"
+          />
+>>>>>>> Stashed changes
           <div>
             <span className="text-[14px] font-semibold text-text-primary tracking-tight">Keycard</span>
             <p className="text-[11px] text-text-muted leading-none mt-0.5">Lathu & Jordan LLC</p>
