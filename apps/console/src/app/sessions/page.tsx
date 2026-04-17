@@ -17,12 +17,12 @@ const columns: Column<Session>[] = [
   {
     key: "id",
     header: "ID",
-    render: (s) => <span className="font-mono text-[11px] text-text-muted">{s.id.slice(0, 12)}</span>,
+    render: (s) => <span className="font-mono text-[12px] text-text-muted">{s.id.slice(0, 12)}</span>,
   },
   {
     key: "agent_name",
     header: "Agent",
-    render: (s) => <span className="text-[13px] text-text-secondary">{s.agent_name || s.agent_id.slice(0, 8)}</span>,
+    render: (s) => <span className="text-[13px] font-medium text-text-primary">{s.agent_name || s.agent_id.slice(0, 8)}</span>,
   },
   {
     key: "status",
@@ -37,7 +37,7 @@ const columns: Column<Session>[] = [
   {
     key: "task_description",
     header: "Task",
-    render: (s) => <span className="text-text-muted text-[11px] max-w-xs truncate block">{s.task_description}</span>,
+    render: (s) => <span className="text-text-muted text-[12px] max-w-xs truncate block">{s.task_description}</span>,
   },
   {
     key: "tool_call_count",
@@ -48,7 +48,7 @@ const columns: Column<Session>[] = [
     key: "started_at",
     header: "Started",
     render: (s) => (
-      <span className="text-text-faint text-[11px]">
+      <span className="text-text-faint text-[12px]">
         {formatDistanceToNow(new Date(s.started_at), { addSuffix: true })}
       </span>
     ),
@@ -72,7 +72,7 @@ export default function SessionsPage() {
     : sessions.filter((s) => s.status.toLowerCase() === filter.toLowerCase());
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto animate-fade-in">
       <PageHeader title="Sessions" description="View active and historical agent sessions" />
 
       <div className="flex items-center gap-1.5 mb-6">
@@ -81,15 +81,15 @@ export default function SessionsPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={clsx(
-              "px-3 py-1.5 text-[11px] font-medium transition-colors",
+              "px-3.5 py-1.5 text-[12px] font-semibold rounded-lg transition-all duration-200 cursor-pointer",
               filter === f
-                ? "bg-[#ffffff08] text-text-secondary border border-border-hover"
-                : "text-text-muted border border-transparent hover:text-text-secondary"
+                ? "bg-accent/10 text-accent border border-accent/20"
+                : "text-text-muted border border-transparent hover:text-text-secondary hover:bg-surface-2"
             )}
           >
             {f}
             {f !== "All" && (
-              <span className="ml-1 tabular-nums text-text-faint">
+              <span className="ml-1.5 tabular-nums text-text-faint">
                 {sessions.filter((s) => s.status.toLowerCase() === f.toLowerCase()).length}
               </span>
             )}
@@ -99,7 +99,7 @@ export default function SessionsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState

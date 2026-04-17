@@ -23,19 +23,19 @@ export function MetricCard({ label, value, trend, icon, className }: MetricCardP
   return (
     <div
       className={clsx(
-        "border border-border-subtle bg-surface-1 p-5 transition-colors hover:bg-surface-2",
+        "group relative overflow-hidden rounded-xl border border-border bg-surface-1 p-5 transition-all duration-300 hover:border-border-hover hover:bg-surface-2/80",
         className
       )}
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[13px] text-text-muted font-medium">{label}</p>
-          <p className="mt-2 text-2xl font-semibold text-text-primary tabular-nums">
+          <p className="text-[12px] text-text-muted font-medium uppercase tracking-wide">{label}</p>
+          <p className="mt-2 text-2xl font-bold text-text-primary tabular-nums tracking-tight">
             {formatValue(value)}
           </p>
         </div>
         {icon && (
-          <div className="flex items-center justify-center w-8 h-8 bg-surface-2 text-text-muted">
+          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent/15">
             {icon}
           </div>
         )}
@@ -43,19 +43,19 @@ export function MetricCard({ label, value, trend, icon, className }: MetricCardP
       {trend && (
         <div className="mt-3 flex items-center gap-1.5">
           {trend.direction === "up" ? (
-            <TrendingUp className="w-3 h-3 text-[#30a46c]" />
+            <TrendingUp className="w-3.5 h-3.5 text-accent" />
           ) : (
-            <TrendingDown className="w-3 h-3 text-[#ec5d5e]" />
+            <TrendingDown className="w-3.5 h-3.5 text-danger" />
           )}
           <span
             className={clsx(
-              "text-xs font-medium",
-              trend.direction === "up" ? "text-[#30a46c]" : "text-[#ec5d5e]"
+              "text-xs font-semibold",
+              trend.direction === "up" ? "text-accent" : "text-danger"
             )}
           >
             {trend.value}%
           </span>
-          <span className="text-xs text-text-faint">vs last week</span>
+          <span className="text-[11px] text-text-faint">vs last week</span>
         </div>
       )}
     </div>

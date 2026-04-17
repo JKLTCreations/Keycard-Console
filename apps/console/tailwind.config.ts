@@ -8,32 +8,53 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+      },
       colors: {
         surface: {
-          0: "#06080f",
-          1: "#0d0e13",
-          2: "#131418",
-          3: "#1a1b20",
+          0: "#050608",
+          1: "#0c0d12",
+          2: "#14151b",
+          3: "#1c1d24",
         },
         border: {
-          DEFAULT: "#212225",
-          subtle: "#1a1b1e",
-          hover: "#2e3135",
+          DEFAULT: "#1e2028",
+          subtle: "#16171d",
+          hover: "#2a2c35",
         },
         text: {
-          primary: "#edeef0",
-          secondary: "#b0b4ba",
-          muted: "#5a6169",
-          faint: "#3a3d42",
+          primary: "#f0f1f3",
+          secondary: "#a0a4ad",
+          muted: "#5c616b",
+          faint: "#383c44",
+        },
+        accent: {
+          DEFAULT: "#10b981",
+          muted: "#10b98120",
+          subtle: "#10b98110",
+        },
+        danger: {
+          DEFAULT: "#ef4444",
+          muted: "#ef444420",
+        },
+        warning: {
+          DEFAULT: "#f59e0b",
+          muted: "#f59e0b20",
         },
       },
       animation: {
-        "fade-in": "fade-in 0.3s ease-out",
+        "fade-in": "fade-in 0.4s ease-out",
+        "slide-up": "slide-up 0.4s ease-out",
       },
       keyframes: {
         "fade-in": {
           "0%": { opacity: "0" },
           "100%": { opacity: "1" },
+        },
+        "slide-up": {
+          "0%": { opacity: "0", transform: "translateY(8px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },

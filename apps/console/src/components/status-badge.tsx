@@ -1,18 +1,18 @@
 import { clsx } from "clsx";
 
 const variants = {
-  success: "text-[#30a46c] bg-[#30a46c0a] border-[#30a46c20]",
-  warning: "text-[#f5a623] bg-[#f5a6230a] border-[#f5a62320]",
-  danger: "text-[#ec5d5e] bg-[#ec5d5e0a] border-[#ec5d5e20]",
-  info: "text-text-secondary bg-[#ffffff05] border-border",
-  neutral: "text-text-muted bg-[#ffffff05] border-border",
+  success: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  warning: "text-amber-400 bg-amber-500/10 border-amber-500/20",
+  danger: "text-red-400 bg-red-500/10 border-red-500/20",
+  info: "text-blue-400 bg-blue-500/10 border-blue-500/20",
+  neutral: "text-text-muted bg-surface-2 border-border",
 };
 
 const dotColors = {
-  success: "bg-[#30a46c]",
-  warning: "bg-[#f5a623]",
-  danger: "bg-[#ec5d5e]",
-  info: "bg-text-secondary",
+  success: "bg-emerald-400",
+  warning: "bg-amber-400",
+  danger: "bg-red-400",
+  info: "bg-blue-400",
   neutral: "bg-text-muted",
 };
 
@@ -51,12 +51,12 @@ export function StatusBadge({ status, variant, className }: StatusBadgeProps) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium border",
+        "inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-semibold border rounded-full capitalize",
         variants[v],
         className
       )}
     >
-      <span className={clsx("w-1 h-1 rounded-full", dotColors[v])} />
+      <span className={clsx("w-1.5 h-1.5 rounded-full", dotColors[v])} />
       {status}
     </span>
   );

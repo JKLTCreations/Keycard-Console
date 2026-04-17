@@ -1,7 +1,7 @@
 "use client";
 
 import { PageHeader } from "@/components/page-header";
-import { KeyRound, Globe, Bell, Shield } from "lucide-react";
+import { KeyRound, Globe, Bell, Shield, ChevronRight } from "lucide-react";
 
 const settingsSections = [
   {
@@ -32,30 +32,31 @@ const settingsSections = [
 
 export default function SettingsPage() {
   return (
-    <div className="max-w-3xl mx-auto">
+    <div className="max-w-3xl mx-auto animate-fade-in">
       <PageHeader title="Settings" description="Configure your Keycard instance" />
 
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {settingsSections.map((section) => (
           <div
             key={section.title}
-            className="flex items-center gap-4 border border-border bg-surface-1 p-4 hover:bg-[#ffffff03] transition-colors cursor-pointer"
+            className="group flex items-center gap-4 rounded-xl border border-border bg-surface-1 p-5 hover:border-border-hover hover:bg-surface-2/50 transition-all duration-200 cursor-pointer"
           >
-            <div className="flex items-center justify-center w-8 h-8 bg-surface-2 text-text-muted flex-shrink-0">
-              <section.icon className="w-4 h-4" />
+            <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-accent/10 text-accent flex-shrink-0 group-hover:bg-accent/15 transition-colors">
+              <section.icon className="w-[18px] h-[18px]" />
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="text-[13px] font-medium text-text-secondary">{section.title}</h3>
-              <p className="text-[11px] text-text-muted mt-0.5">{section.description}</p>
+              <h3 className="text-[14px] font-semibold text-text-primary">{section.title}</h3>
+              <p className="text-[12px] text-text-muted mt-0.5">{section.description}</p>
             </div>
-            <span className="text-[11px] text-text-faint bg-surface-2 px-2 py-0.5 flex-shrink-0">
+            <span className="text-[11px] font-medium text-text-faint bg-surface-2 px-2.5 py-1 rounded-md flex-shrink-0">
               {section.status}
             </span>
+            <ChevronRight className="w-4 h-4 text-text-faint group-hover:text-text-muted transition-colors flex-shrink-0" />
           </div>
         ))}
       </div>
 
-      <div className="mt-8 border border-border bg-surface-1 p-5">
+      <div className="mt-8 rounded-xl border border-border bg-surface-1 p-6">
         <p className="text-[13px] text-text-muted text-center">
           Full settings configuration coming in a future release.
         </p>

@@ -17,7 +17,7 @@ const columns: Column<AuditEvent>[] = [
     key: "created_at",
     header: "Time",
     render: (e) => (
-      <span className="text-text-faint text-[11px] whitespace-nowrap">
+      <span className="text-text-faint text-[12px] whitespace-nowrap">
         {formatDistanceToNow(new Date(e.created_at), { addSuffix: true })}
       </span>
     ),
@@ -25,22 +25,22 @@ const columns: Column<AuditEvent>[] = [
   {
     key: "agent_name",
     header: "Agent",
-    render: (e) => <span className="font-mono text-[11px] text-text-secondary">{e.agent_name || e.agent_id.slice(0, 8)}</span>,
+    render: (e) => <span className="font-mono text-[12px] text-text-secondary font-medium">{e.agent_name || e.agent_id.slice(0, 8)}</span>,
   },
   {
     key: "tool_name",
     header: "Tool",
-    render: (e) => <span className="text-[11px] text-text-muted">{e.tool_name || "-"}</span>,
+    render: (e) => <span className="text-[12px] text-text-muted">{e.tool_name || "-"}</span>,
   },
   {
     key: "action",
     header: "Action",
-    render: (e) => <span className="font-mono text-[11px] text-text-secondary">{e.action}</span>,
+    render: (e) => <span className="font-mono text-[12px] text-text-secondary">{e.action}</span>,
   },
   {
     key: "resource",
     header: "Resource",
-    render: (e) => <span className="font-mono text-[11px] text-text-muted max-w-xs truncate block">{e.resource}</span>,
+    render: (e) => <span className="font-mono text-[12px] text-text-muted max-w-xs truncate block">{e.resource}</span>,
   },
   {
     key: "outcome",
@@ -50,7 +50,7 @@ const columns: Column<AuditEvent>[] = [
   {
     key: "reason",
     header: "Reason",
-    render: (e) => <span className="text-[11px] text-text-faint max-w-[180px] truncate block">{e.reason || "-"}</span>,
+    render: (e) => <span className="text-[12px] text-text-faint max-w-[180px] truncate block">{e.reason || "-"}</span>,
   },
 ];
 
@@ -71,7 +71,7 @@ export default function AuditPage() {
     : events.filter((e) => e.outcome.toLowerCase() === filter.toLowerCase());
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto animate-fade-in">
       <PageHeader title="Audit Log" description="Complete record of agent actions and policy decisions" />
 
       <div className="flex items-center gap-1.5 mb-6">
@@ -80,14 +80,14 @@ export default function AuditPage() {
             key={f}
             onClick={() => setFilter(f)}
             className={clsx(
-              "px-3 py-1.5 text-[11px] font-medium transition-colors",
+              "px-3.5 py-1.5 text-[12px] font-semibold rounded-lg transition-all duration-200 cursor-pointer",
               filter === f
-                ? "bg-[#ffffff08] text-text-secondary border border-border-hover"
-                : "text-text-muted border border-transparent hover:text-text-secondary"
+                ? "bg-accent/10 text-accent border border-accent/20"
+                : "text-text-muted border border-transparent hover:text-text-secondary hover:bg-surface-2"
             )}
           >
             {f}
-            <span className="ml-1 tabular-nums text-text-faint">
+            <span className="ml-1.5 tabular-nums text-text-faint">
               {f === "All" ? events.length : events.filter((e) => e.outcome.toLowerCase() === f.toLowerCase()).length}
             </span>
           </button>
@@ -96,7 +96,7 @@ export default function AuditPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
         </div>
       ) : filtered.length === 0 ? (
         <EmptyState icon={ScrollText} title="No audit events" description="Audit events will appear here as agents make requests." />

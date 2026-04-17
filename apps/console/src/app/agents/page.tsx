@@ -14,13 +14,13 @@ const columns: Column<Agent>[] = [
   {
     key: "name",
     header: "Name",
-    render: (agent) => <span className="text-[13px] text-text-secondary">{agent.name}</span>,
+    render: (agent) => <span className="text-[13px] font-medium text-text-primary">{agent.name}</span>,
   },
   {
     key: "type",
     header: "Type",
     render: (agent) => (
-      <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-1.5 py-0.5">{agent.type}</span>
+      <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-2 py-1 rounded-md">{agent.type}</span>
     ),
   },
   {
@@ -37,7 +37,7 @@ const columns: Column<Agent>[] = [
     key: "last_active_at",
     header: "Last Active",
     render: (agent) => (
-      <span className="text-text-faint text-[11px]">
+      <span className="text-text-faint text-[12px]">
         {agent.last_active_at
           ? formatDistanceToNow(new Date(agent.last_active_at), { addSuffix: true })
           : "Never"}
@@ -58,14 +58,14 @@ export default function AgentsPage() {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto">
+    <div className="max-w-7xl mx-auto animate-fade-in">
       <PageHeader
         title="Agents"
         description="Manage registered AI agents and their access"
         action={
           <Link
             href="/agents/new"
-            className="inline-flex items-center gap-2 px-3.5 py-2 text-[13px] font-medium bg-surface-3 text-text-primary border border-border hover:bg-[#ffffff10] transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2.5 text-[13px] font-semibold bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors cursor-pointer"
           >
             <Plus className="w-3.5 h-3.5" />
             Register Agent
@@ -75,7 +75,7 @@ export default function AgentsPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-16">
-          <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
+          <div className="w-5 h-5 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
         </div>
       ) : agents.length === 0 ? (
         <EmptyState

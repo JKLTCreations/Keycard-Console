@@ -24,7 +24,7 @@ export default function PolicyDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="w-5 h-5 border-2 border-border border-t-text-muted rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
       </div>
     );
   }
@@ -43,60 +43,60 @@ export default function PolicyDetailPage() {
   const escalates = rules.filter((r) => r.outcome === "escalate").length;
 
   return (
-    <div className="max-w-5xl mx-auto">
-      <Link href="/policies" className="inline-flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors">
+    <div className="max-w-5xl mx-auto animate-fade-in">
+      <Link href="/policies" className="inline-flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors cursor-pointer">
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to Policies
       </Link>
 
       <div className="flex items-center gap-3 mb-8">
-        <h1 className="text-xl font-semibold text-text-primary">{policy.name}</h1>
+        <h1 className="text-xl font-bold text-text-primary tracking-tight">{policy.name}</h1>
         <StatusBadge status={policy.status} />
-        <span className="font-mono text-[11px] text-text-muted">v{policy.version}</span>
+        <span className="font-mono text-[12px] text-text-muted">v{policy.version}</span>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
-        <div className="border border-border bg-surface-1 p-3">
-          <p className="text-[11px] text-text-faint font-medium mb-1">Policy ID</p>
-          <p className="text-[13px] text-text-secondary font-mono">{(params.id as string).slice(0, 12)}</p>
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+        <div className="rounded-xl border border-border bg-surface-1 p-4">
+          <p className="text-[11px] text-text-faint font-semibold uppercase tracking-wide mb-1.5">Policy ID</p>
+          <p className="text-[13px] text-text-secondary font-mono font-medium">{(params.id as string).slice(0, 12)}</p>
         </div>
-        <div className="border border-border bg-surface-1 p-3">
-          <p className="text-[11px] text-text-faint font-medium mb-1">Total Rules</p>
-          <p className="text-[13px] text-text-secondary">{rules.length}</p>
+        <div className="rounded-xl border border-border bg-surface-1 p-4">
+          <p className="text-[11px] text-text-faint font-semibold uppercase tracking-wide mb-1.5">Total Rules</p>
+          <p className="text-[13px] text-text-secondary font-medium">{rules.length}</p>
         </div>
-        <div className="border border-border bg-surface-1 p-3">
-          <p className="text-[11px] text-text-faint font-medium mb-1">Breakdown</p>
-          <div className="flex items-center gap-2 text-[11px]">
-            {allows > 0 && <span className="text-[#30a46c]">{allows} allow</span>}
-            {denies > 0 && <span className="text-[#ec5d5e]">{denies} deny</span>}
-            {escalates > 0 && <span className="text-[#f5a623]">{escalates} escalate</span>}
+        <div className="rounded-xl border border-border bg-surface-1 p-4">
+          <p className="text-[11px] text-text-faint font-semibold uppercase tracking-wide mb-1.5">Breakdown</p>
+          <div className="flex items-center gap-2 text-[12px]">
+            {allows > 0 && <span className="text-emerald-400 font-semibold">{allows} allow</span>}
+            {denies > 0 && <span className="text-red-400 font-semibold">{denies} deny</span>}
+            {escalates > 0 && <span className="text-amber-400 font-semibold">{escalates} escalate</span>}
           </div>
         </div>
-        <div className="border border-border bg-surface-1 p-3">
-          <p className="text-[11px] text-text-faint font-medium mb-1">Last Modified</p>
-          <p className="text-[13px] text-text-secondary">{format(new Date(policy.updated_at), "MMM d, yyyy")}</p>
+        <div className="rounded-xl border border-border bg-surface-1 p-4">
+          <p className="text-[11px] text-text-faint font-semibold uppercase tracking-wide mb-1.5">Last Modified</p>
+          <p className="text-[13px] text-text-secondary font-medium">{format(new Date(policy.updated_at), "MMM d, yyyy")}</p>
         </div>
       </div>
 
       <div>
-        <h3 className="text-[13px] font-medium text-text-muted mb-3">Rules</h3>
-        <div className="space-y-1.5">
+        <h3 className="text-[13px] font-semibold text-text-muted mb-4 uppercase tracking-wide">Rules</h3>
+        <div className="space-y-2">
           {rules.map((rule, i) => (
-            <div key={i} className="border border-border bg-surface-1 p-3">
+            <div key={i} className="rounded-xl border border-border bg-surface-1 p-4 hover:bg-surface-2/30 transition-colors">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4 text-[13px]">
+                <div className="flex items-center gap-6 text-[13px]">
                   <div>
-                    <span className="text-[10px] text-text-faint uppercase tracking-wider block">Tool</span>
-                    <span className="font-mono text-text-secondary">{rule.tool}</span>
+                    <span className="text-[10px] text-text-faint uppercase tracking-widest font-semibold block mb-0.5">Tool</span>
+                    <span className="font-mono text-text-secondary font-medium">{rule.tool}</span>
                   </div>
                   <div>
-                    <span className="text-[10px] text-text-faint uppercase tracking-wider block">Action</span>
-                    <span className="font-mono text-text-secondary">{rule.action}</span>
+                    <span className="text-[10px] text-text-faint uppercase tracking-widest font-semibold block mb-0.5">Action</span>
+                    <span className="font-mono text-text-secondary font-medium">{rule.action}</span>
                   </div>
                   {(rule as any).condition && (
                     <div>
-                      <span className="text-[10px] text-text-faint uppercase tracking-wider block">Condition</span>
-                      <span className="font-mono text-[11px] text-text-muted">{(rule as any).condition}</span>
+                      <span className="text-[10px] text-text-faint uppercase tracking-widest font-semibold block mb-0.5">Condition</span>
+                      <span className="font-mono text-[12px] text-text-muted">{(rule as any).condition}</span>
                     </div>
                   )}
                 </div>
@@ -106,7 +106,7 @@ export default function PolicyDetailPage() {
                 />
               </div>
               {(rule as any).reason && (
-                <p className="text-[11px] text-text-faint mt-2">{(rule as any).reason}</p>
+                <p className="text-[12px] text-text-faint mt-2.5">{(rule as any).reason}</p>
               )}
             </div>
           ))}
