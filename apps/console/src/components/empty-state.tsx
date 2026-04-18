@@ -17,16 +17,16 @@ export function EmptyState({
   actionHref,
 }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center py-20 text-center">
-      <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-surface-2 ring-1 ring-border mb-5">
-        <Icon className="w-5 h-5 text-text-muted" />
+    <div className="flex flex-col items-center justify-center py-16 text-center">
+      <div className="flex items-center justify-center w-10 h-10 rounded-lg border border-border mb-4">
+        <Icon className="w-4 h-4 text-text-muted" />
       </div>
-      <h3 className="text-sm font-semibold text-text-secondary">{title}</h3>
-      <p className="mt-1.5 text-[13px] text-text-muted max-w-sm leading-relaxed">{description}</p>
+      <h3 className="text-[13px] font-medium text-text-secondary">{title}</h3>
+      <p className="mt-1 text-[13px] text-text-muted max-w-sm">{description}</p>
       {actionLabel && actionHref && (
         <Link
           href={actionHref}
-          className="mt-5 px-5 py-2.5 text-[13px] font-semibold bg-accent text-white rounded-lg hover:bg-accent/90 transition-colors"
+          className="mt-4 px-4 py-2 text-[13px] font-medium bg-text-primary text-surface-0 rounded-md hover:bg-text-secondary transition-colors duration-100 cursor-pointer"
         >
           {actionLabel}
         </Link>

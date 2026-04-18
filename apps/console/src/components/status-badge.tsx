@@ -1,17 +1,17 @@
 import { clsx } from "clsx";
 
 const variants = {
-  success: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-  warning: "text-amber-400 bg-amber-500/10 border-amber-500/20",
-  danger: "text-red-400 bg-red-500/10 border-red-500/20",
-  info: "text-blue-400 bg-blue-500/10 border-blue-500/20",
-  neutral: "text-text-muted bg-surface-2 border-border",
+  success: "text-emerald-500 bg-emerald-500/10",
+  warning: "text-amber-500 bg-amber-500/10",
+  danger: "text-red-500 bg-red-500/10",
+  info: "text-blue-400 bg-blue-400/10",
+  neutral: "text-text-muted bg-surface-2",
 };
 
 const dotColors = {
-  success: "bg-emerald-400",
-  warning: "bg-amber-400",
-  danger: "bg-red-400",
+  success: "bg-emerald-500",
+  warning: "bg-amber-500",
+  danger: "bg-red-500",
   info: "bg-blue-400",
   neutral: "bg-text-muted",
 };
@@ -51,7 +51,7 @@ export function StatusBadge({ status, variant, className }: StatusBadgeProps) {
   return (
     <span
       className={clsx(
-        "inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-semibold border rounded-full capitalize",
+        "inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded capitalize",
         variants[v],
         className
       )}

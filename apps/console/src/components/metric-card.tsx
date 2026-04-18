@@ -23,39 +23,37 @@ export function MetricCard({ label, value, trend, icon, className }: MetricCardP
   return (
     <div
       className={clsx(
-        "group relative overflow-hidden rounded-xl border border-border bg-surface-1 p-5 transition-all duration-300 hover:border-border-hover hover:bg-surface-2/80",
+        "border border-border rounded-lg p-4 transition-colors duration-100 hover:bg-surface-1",
         className
       )}
     >
-      <div className="flex items-start justify-between">
-        <div>
-          <p className="text-[12px] text-text-muted font-medium uppercase tracking-wide">{label}</p>
-          <p className="mt-2 text-2xl font-bold text-text-primary tabular-nums tracking-tight">
-            {formatValue(value)}
-          </p>
-        </div>
+      <div className="flex items-center justify-between">
+        <p className="text-[12px] text-text-muted">{label}</p>
         {icon && (
-          <div className="flex items-center justify-center w-9 h-9 rounded-lg bg-accent/10 text-accent transition-colors group-hover:bg-accent/15">
+          <div className="text-text-faint">
             {icon}
           </div>
         )}
       </div>
+      <p className="mt-2 text-2xl font-semibold text-text-primary tabular-nums tracking-tight">
+        {formatValue(value)}
+      </p>
       {trend && (
-        <div className="mt-3 flex items-center gap-1.5">
+        <div className="mt-1.5 flex items-center gap-1">
           {trend.direction === "up" ? (
-            <TrendingUp className="w-3.5 h-3.5 text-accent" />
+            <TrendingUp className="w-3 h-3 text-emerald-500" />
           ) : (
-            <TrendingDown className="w-3.5 h-3.5 text-danger" />
+            <TrendingDown className="w-3 h-3 text-red-500" />
           )}
           <span
             className={clsx(
-              "text-xs font-semibold",
-              trend.direction === "up" ? "text-accent" : "text-danger"
+              "text-[12px] tabular-nums",
+              trend.direction === "up" ? "text-emerald-500" : "text-red-500"
             )}
           >
             {trend.value}%
           </span>
-          <span className="text-[11px] text-text-faint">vs last week</span>
+          <span className="text-[12px] text-text-faint">vs last week</span>
         </div>
       )}
     </div>

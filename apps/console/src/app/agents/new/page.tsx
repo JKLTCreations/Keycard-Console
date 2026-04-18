@@ -46,29 +46,29 @@ export default function NewAgentPage() {
   };
 
   const inputClasses =
-    "w-full border border-border bg-surface-2 px-4 py-2.5 text-sm text-text-primary placeholder-text-faint rounded-lg focus:border-accent/50 focus:ring-1 focus:ring-accent/30 outline-none transition-all";
+    "w-full border border-border bg-surface-1 px-3 py-2 text-[13px] text-text-primary placeholder-text-faint rounded-md focus:border-blue focus:ring-1 focus:ring-blue/30 outline-none transition-colors duration-100";
 
   return (
-    <div className="max-w-2xl mx-auto animate-fade-in">
+    <div className="max-w-lg mx-auto animate-fade-in">
       <Link
         href="/agents"
-        className="inline-flex items-center gap-1.5 text-sm text-text-muted hover:text-text-secondary mb-4 transition-colors cursor-pointer"
+        className="inline-flex items-center gap-1 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors duration-100 cursor-pointer"
       >
-        <ArrowLeft className="w-4 h-4" />
+        <ArrowLeft className="w-3.5 h-3.5" />
         Back to Agents
       </Link>
 
       <PageHeader title="Register Agent" description="Create a new AI agent with access controls" />
 
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-400">
+          <div className="rounded-md border border-red-500/20 bg-red-500/5 p-3 text-[13px] text-red-400">
             {error}
           </div>
         )}
 
         <div>
-          <label className="block text-sm font-medium text-text-secondary mb-2">Name</label>
+          <label className="block text-[12px] font-medium text-text-muted mb-1.5">Name</label>
           <input
             type="text"
             value={name}
@@ -80,7 +80,7 @@ export default function NewAgentPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-text-secondary mb-2">Type</label>
+          <label className="block text-[12px] font-medium text-text-muted mb-1.5">Type</label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value)}
@@ -95,28 +95,28 @@ export default function NewAgentPage() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-text-secondary mb-2">
+          <label className="block text-[12px] font-medium text-text-muted mb-1.5">
             Configuration (JSON)
           </label>
           <textarea
             value={config}
             onChange={(e) => setConfig(e.target.value)}
-            rows={6}
-            className={`${inputClasses} font-mono`}
+            rows={5}
+            className={`${inputClasses} font-mono text-[12px]`}
           />
         </div>
 
-        <div className="flex gap-3 pt-2">
+        <div className="flex gap-2 pt-1">
           <button
             type="submit"
             disabled={submitting || !name}
-            className="px-6 py-2.5 text-sm font-semibold bg-accent text-white rounded-lg hover:bg-accent/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors cursor-pointer"
+            className="px-4 py-2 text-[13px] font-medium bg-text-primary text-surface-0 rounded-md hover:bg-text-secondary disabled:opacity-50 disabled:cursor-not-allowed transition-colors duration-100 cursor-pointer"
           >
             {submitting ? "Creating..." : "Create Agent"}
           </button>
           <Link
             href="/agents"
-            className="px-6 py-2.5 text-sm font-medium border border-border text-text-secondary rounded-lg hover:bg-surface-2 transition-colors"
+            className="px-4 py-2 text-[13px] font-medium border border-border text-text-secondary rounded-md hover:bg-surface-1 transition-colors duration-100"
           >
             Cancel
           </Link>

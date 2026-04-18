@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { Sidebar } from "@/components/sidebar";
 import { Header } from "@/components/header";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Keycard Console",
@@ -15,11 +21,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-surface-0 text-text-primary">
+      <body className={`${inter.className} bg-surface-0 text-text-primary`}>
         <Sidebar />
-        <div className="lg:pl-[260px] min-h-screen flex flex-col">
+        <div className="lg:pl-[240px] min-h-screen flex flex-col">
           <Header />
-          <main className="flex-1 p-6 lg:p-8">{children}</main>
+          <main className="flex-1 px-6 py-6 lg:px-8">{children}</main>
         </div>
       </body>
     </html>

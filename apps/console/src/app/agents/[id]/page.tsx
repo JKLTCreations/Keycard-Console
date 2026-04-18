@@ -14,7 +14,7 @@ const sessionColumns: Column<Session>[] = [
   {
     key: "id",
     header: "Session ID",
-    render: (s) => <span className="font-mono text-[12px] text-text-muted">{s.id.slice(0, 12)}</span>,
+    render: (s) => <span className="font-mono text-[11px] text-text-muted">{s.id.slice(0, 12)}</span>,
   },
   {
     key: "status",
@@ -64,14 +64,14 @@ export default function AgentDetailPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center py-16">
-        <div className="w-5 h-5 border-2 border-accent/20 border-t-accent rounded-full animate-spin" />
+        <div className="w-5 h-5 border-2 border-surface-3 border-t-text-muted rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!agent) {
     return (
-      <div className="max-w-5xl mx-auto text-center py-16 text-text-muted">
+      <div className="max-w-4xl mx-auto text-center py-16 text-[13px] text-text-muted">
         Agent not found.
       </div>
     );
@@ -87,22 +87,22 @@ export default function AgentDetailPage() {
   const totalToolCalls = sessions.reduce((sum, s) => sum + s.tool_call_count, 0);
 
   return (
-    <div className="max-w-5xl mx-auto animate-fade-in">
-      <Link href="/agents" className="inline-flex items-center gap-1.5 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors cursor-pointer">
+    <div className="max-w-4xl mx-auto animate-fade-in">
+      <Link href="/agents" className="inline-flex items-center gap-1 text-[13px] text-text-muted hover:text-text-secondary mb-4 transition-colors duration-100 cursor-pointer">
         <ArrowLeft className="w-3.5 h-3.5" />
         Back to Agents
       </Link>
 
-      <div className="flex items-start justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <h1 className="text-xl font-bold text-text-primary tracking-tight">{agent.name}</h1>
+      <div className="flex items-start justify-between mb-6">
+        <div className="flex items-center gap-2.5">
+          <h1 className="text-[14px] font-semibold text-text-primary">{agent.name}</h1>
           <StatusBadge status={agent.status} />
-          <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-2 py-1 rounded-md">{agent.type}</span>
+          <span className="font-mono text-[11px] text-text-muted bg-surface-2 px-1.5 py-0.5 rounded">{agent.type}</span>
         </div>
         {agent.status === "active" && (
           <button
             onClick={() => setShowConfirm(true)}
-            className="inline-flex items-center gap-2 px-4 py-2 text-[13px] font-medium rounded-lg border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 text-[13px] font-medium rounded-md border border-red-500/20 text-red-400 hover:bg-red-500/10 transition-colors duration-100 cursor-pointer"
           >
             <Trash2 className="w-3.5 h-3.5" />
             Revoke
@@ -111,50 +111,50 @@ export default function AgentDetailPage() {
       </div>
 
       {showConfirm && (
-        <div className="mb-6 rounded-lg border border-red-500/20 bg-red-500/5 p-5">
+        <div className="mb-4 rounded-md border border-red-500/20 bg-red-500/5 p-4">
           <p className="text-[13px] text-red-400 mb-3">
             Are you sure you want to revoke this agent? This action cannot be undone.
           </p>
           <div className="flex gap-2">
-            <button onClick={handleRevoke} className="px-4 py-2 text-[13px] font-semibold bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors cursor-pointer">
+            <button onClick={handleRevoke} className="px-3 py-1.5 text-[13px] font-medium bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors duration-100 cursor-pointer">
               Confirm Revoke
             </button>
-            <button onClick={() => setShowConfirm(false)} className="px-4 py-2 text-[13px] font-medium rounded-lg border border-border text-text-secondary hover:bg-surface-2 transition-colors cursor-pointer">
+            <button onClick={() => setShowConfirm(false)} className="px-3 py-1.5 text-[13px] font-medium rounded-md border border-border text-text-secondary hover:bg-surface-1 transition-colors duration-100 cursor-pointer">
               Cancel
             </button>
           </div>
         </div>
       )}
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-3 mb-6">
         <MetricCard label="Total Sessions" value={sessions.length} icon={<Activity className="w-4 h-4" />} />
         <MetricCard label="Completed" value={completedSessions} icon={<Clock className="w-4 h-4" />} />
         <MetricCard label="Total Tool Calls" value={totalToolCalls} icon={<Terminal className="w-4 h-4" />} />
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
         {[
           { label: "Type", value: agent.type },
           { label: "Created", value: format(new Date(agent.created_at), "MMM d, yyyy") },
           { label: "Last Active", value: agent.last_active_at ? formatDistanceToNow(new Date(agent.last_active_at), { addSuffix: true }) : "Never" },
           { label: "Updated", value: format(new Date(agent.updated_at), "MMM d, yyyy") },
         ].map((item) => (
-          <div key={item.label} className="rounded-xl border border-border bg-surface-1 p-4">
-            <p className="text-[11px] text-text-faint font-semibold uppercase tracking-wide mb-1.5">{item.label}</p>
-            <p className="text-[13px] text-text-secondary font-medium">{item.value}</p>
+          <div key={item.label} className="border border-border rounded-lg p-3">
+            <p className="text-[11px] text-text-faint mb-1">{item.label}</p>
+            <p className="text-[13px] text-text-secondary">{item.value}</p>
           </div>
         ))}
       </div>
 
-      <div className="rounded-xl border border-border bg-surface-1 p-6 mb-8">
-        <h3 className="text-[13px] font-semibold text-text-muted mb-4 uppercase tracking-wide">Configuration</h3>
-        <pre className="text-[12px] text-text-secondary font-mono bg-surface-0 border border-border-subtle rounded-lg p-4 overflow-x-auto">
+      <div className="border border-border rounded-lg p-4 mb-6">
+        <h3 className="text-[12px] text-text-muted mb-3">Configuration</h3>
+        <pre className="text-[12px] text-text-secondary font-mono bg-surface-1 border border-border-subtle rounded-md p-3 overflow-x-auto">
           {JSON.stringify(agent.config || {}, null, 2)}
         </pre>
       </div>
 
-      <div className="mb-8">
-        <h3 className="text-[13px] font-semibold text-text-muted mb-4 uppercase tracking-wide">Recent Sessions</h3>
+      <div className="mb-6">
+        <h3 className="text-[12px] text-text-muted mb-3">Recent Sessions</h3>
         {sessions.length > 0 ? (
           <DataTable columns={sessionColumns} data={sessions} rowHref={(s) => `/sessions/${s.id}`} />
         ) : (

@@ -15,7 +15,6 @@ import {
   Menu,
   X,
   User,
-  ChevronRight,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -41,6 +40,7 @@ export function Sidebar() {
   const nav = (
     <div className="flex flex-col h-full">
       {/* Brand */}
+<<<<<<< HEAD
       <div className="px-5 py-5">
         <div className="flex items-center gap-3">
           <Image
@@ -54,12 +54,17 @@ export function Sidebar() {
             <span className="text-[14px] font-semibold text-text-primary tracking-tight">Keycard</span>
             <p className="text-[11px] text-text-muted leading-none mt-0.5">Lathu & Jordan LLC</p>
           </div>
+=======
+      <div className="h-12 flex items-center px-4 border-b border-border">
+        <div className="flex items-center gap-2.5">
+          <KeyRound className="w-4 h-4 text-text-primary" />
+          <span className="text-[13px] font-semibold text-text-primary tracking-tight">Keycard</span>
+>>>>>>> cdeeae7 (ui)
         </div>
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 px-3 py-2 space-y-0.5 overflow-y-auto">
-        <p className="px-3 pt-2 pb-2 text-[10px] font-semibold text-text-faint uppercase tracking-widest">Menu</p>
+      <nav className="flex-1 px-2 py-2 space-y-px overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const active = isActive(item.href);
@@ -69,29 +74,27 @@ export function Sidebar() {
               href={item.href}
               onClick={() => setMobileOpen(false)}
               className={clsx(
-                "group flex items-center gap-3 px-3 py-2 text-[13px] font-medium rounded-lg transition-all duration-200",
+                "flex items-center gap-2.5 px-2.5 py-[7px] text-[13px] rounded-md transition-colors duration-100",
                 active
-                  ? "bg-accent/10 text-accent"
+                  ? "bg-surface-2 text-text-primary font-medium"
                   : "text-text-muted hover:text-text-secondary hover:bg-surface-2"
               )}
             >
-              <Icon className={clsx("w-[18px] h-[18px] flex-shrink-0", active && "text-accent")} />
-              <span className="flex-1">{item.label}</span>
-              {active && <ChevronRight className="w-3.5 h-3.5 text-accent/50" />}
+              <Icon className="w-4 h-4 flex-shrink-0" />
+              {item.label}
             </Link>
           );
         })}
       </nav>
 
       {/* User */}
-      <div className="px-4 py-4 mx-3 mb-3 rounded-lg bg-surface-2/50">
-        <div className="flex items-center gap-3">
-          <div className="flex items-center justify-center w-8 h-8 rounded-full bg-surface-3 ring-1 ring-border">
-            <User className="w-3.5 h-3.5 text-text-muted" />
+      <div className="px-3 py-3 border-t border-border">
+        <div className="flex items-center gap-2.5">
+          <div className="flex items-center justify-center w-6 h-6 rounded-full bg-surface-3">
+            <User className="w-3 h-3 text-text-muted" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-medium text-text-secondary truncate">Admin</p>
-            <p className="text-[11px] text-text-muted truncate">admin@keycard.dev</p>
+            <p className="text-[12px] font-medium text-text-secondary truncate">Admin</p>
           </div>
         </div>
       </div>
@@ -102,28 +105,28 @@ export function Sidebar() {
     <>
       <button
         onClick={() => setMobileOpen(!mobileOpen)}
-        className="fixed top-4 left-4 z-50 p-2 rounded-lg bg-surface-2 text-text-muted hover:text-text-secondary transition-colors lg:hidden"
+        className="fixed top-3 left-3 z-50 p-1.5 rounded-md bg-surface-2 text-text-muted lg:hidden cursor-pointer"
       >
-        {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        {mobileOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
       </button>
 
       {mobileOpen && (
         <div
-          className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden"
+          className="fixed inset-0 z-30 bg-black/50 lg:hidden"
           onClick={() => setMobileOpen(false)}
         />
       )}
 
       <aside
         className={clsx(
-          "fixed inset-y-0 left-0 z-40 w-[260px] bg-surface-1/80 backdrop-blur-xl border-r border-border-subtle transform transition-transform lg:hidden",
+          "fixed inset-y-0 left-0 z-40 w-[240px] bg-surface-0 border-r border-border transform transition-transform lg:hidden",
           mobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         {nav}
       </aside>
 
-      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-[260px] bg-surface-1/80 backdrop-blur-xl border-r border-border-subtle">
+      <aside className="hidden lg:flex lg:flex-col lg:fixed lg:inset-y-0 lg:left-0 lg:w-[240px] bg-surface-0 border-r border-border">
         {nav}
       </aside>
     </>

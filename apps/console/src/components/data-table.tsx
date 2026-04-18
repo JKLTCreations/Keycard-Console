@@ -37,14 +37,14 @@ export function DataTable<T extends Record<string, any>>({
   const isClickable = !!onRowClick || !!rowHref;
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-border bg-surface-1">
+    <div className="overflow-x-auto border border-border rounded-lg">
       <table className="w-full text-sm">
         <thead>
           <tr className="border-b border-border">
             {columns.map((col) => (
               <th
                 key={col.key}
-                className={`px-5 py-3.5 text-[11px] font-semibold text-text-muted uppercase tracking-wider ${col.className || ""}`}
+                className={`px-4 py-2.5 text-[11px] font-medium text-text-muted uppercase tracking-wider ${col.className || ""}`}
               >
                 {col.header}
               </th>
@@ -56,16 +56,16 @@ export function DataTable<T extends Record<string, any>>({
             <tr
               key={(item[keyField] as string) || i}
               onClick={() => handleRowClick(item)}
-              className={`transition-colors duration-150 ${
+              className={`transition-colors duration-100 ${
                 isClickable
-                  ? "cursor-pointer hover:bg-surface-2/60"
+                  ? "cursor-pointer hover:bg-surface-1"
                   : ""
               }`}
             >
               {columns.map((col) => (
                 <td
                   key={col.key}
-                  className={`px-5 py-3.5 text-text-secondary ${col.className || ""}`}
+                  className={`px-4 py-2.5 text-text-secondary ${col.className || ""}`}
                 >
                   {col.render
                     ? col.render(item)
